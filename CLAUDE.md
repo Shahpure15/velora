@@ -171,7 +171,7 @@ Mounted globally in `App.jsx`. Four easter eggs:
 ## Component Build Status
 
 - Project Setup ✅
-- Navbar ✅ | Hero ✅ | About ✅ | Tracks ⬜ | Timeline ⬜
+- Navbar ✅ | Hero ✅ | About ✅ | Tracks ✅ | Timeline ⬜
 - Prizes ⬜ | Judges ⬜ | Sponsors ⬜ | FAQ ⬜ | Register ⬜
 - Footer ⬜ | Easter Eggs ⬜
 
@@ -188,3 +188,5 @@ Mounted globally in `App.jsx`. Four easter eggs:
 27-Feb-2026 — Project scaffolded. Vite + React + Tailwind + GSAP + Lenis + Framer Motion all installed. Data files created. globals.css written. Dev server running at localhost:5174. Next: build Navbar and Hero components.
 27-Feb-2026 — Navbar and Hero complete. Next: About section.
 27-Feb-2026 — About section complete. Next: Tracks section.
+27-Feb-2026 — Tracks complete. Next: Timeline section.
+NOTE: After all components done, add WebThread.jsx — a global SVG spider-web path drawn by ScrollTrigger scrub connecting all sections (fixed/absolute overlay, z-index between content layers, stroke-dashoffset animated by scroll progress).

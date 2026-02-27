@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
 import Tracks from './components/Tracks'
+import Timeline from './components/Timeline'
 
 function App() {
   return (
@@ -11,8 +12,9 @@ function App() {
       <Hero />
       <About />
       <Tracks />
+      <Timeline />
       <div
-        id="timeline"
+        id="prizes"
         style={{
           minHeight: '100vh',
           background: '#0A0A0A',
@@ -22,7 +24,7 @@ function App() {
         }}
       >
         <p style={{ opacity: 0.2, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#F5F5F5' }}>
-          Timeline section — coming soon
+          Prizes section — coming soon
         </p>
       </div>
     </>
