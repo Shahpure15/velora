@@ -4,6 +4,7 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Tracks from './components/Tracks'
 import Timeline from './components/Timeline'
+import Prizes from './components/Prizes'
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
       <About />
       <Tracks />
       <Timeline />
+      <Prizes />
       <div
-        id="prizes"
+        id="faq"
         style={{
           minHeight: '100vh',
           background: '#0A0A0A',
@@ -24,7 +26,7 @@ function App() {
         }}
       >
         <p style={{ opacity: 0.2, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#F5F5F5' }}>
-          Prizes section — coming soon
+          FAQ section — coming soon
         </p>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -19,9 +19,9 @@ function statusPhaseColor(status) { return STATUS_COLOR[status] }
 // ─── Starburst ────────────────────────────────────────────────────────────────
 
 function Starburst({ word, status }) {
-  const bg = status === 'completed' ? '#00D4FF'
-           : status === 'active'    ? '#FF2D55'
-           : '#2A2A2A'
+  const bg    = status === 'completed' ? '#00D4FF'
+              : status === 'active'    ? '#FF2D55'
+              : '#2A2A2A'
   const color = status === 'upcoming' ? '#555' : status === 'active' ? '#fff' : '#0A0A0A'
 
   return (
@@ -106,21 +106,20 @@ function StatusBadge({ status }) {
 
 function PhasePanel({ phase }) {
   const { status } = phase
-  const phaseColor = statusPhaseColor(status)
-
+  const phaseColor  = statusPhaseColor(status)
   const borderColor = status === 'completed' ? '#00D4FF'
                     : status === 'active'    ? '#FF2D55'
                     : '#333'
-  const boxShadow   = status === 'completed' ? `5px 5px 0 #00D4FF`
-                    : status === 'active'    ? `5px 5px 0 #FF2D55`
-                    : `5px 5px 0 #222`
+  const boxShadow   = status === 'completed' ? '5px 5px 0 #00D4FF'
+                    : status === 'active'    ? '5px 5px 0 #FF2D55'
+                    : '5px 5px 0 #222'
   const opacity     = status === 'upcoming' ? 0.7 : 1
 
   return (
     <div
       className={`tl-panel tl-panel--${status}`}
       style={{
-        width: '280px',
+        width: 'var(--tl-panel-width, 280px)',
         flexShrink: 0,
         background: '#111',
         border: `3px solid ${borderColor}`,
@@ -151,8 +150,7 @@ function PhasePanel({ phase }) {
       {status === 'completed' && (
         <div style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
+          top: '50%', left: '50%',
           transform: 'translate(-50%, -50%) rotate(-20deg)',
           border: '3px solid #00D4FF',
           color: '#00D4FF',
@@ -170,12 +168,7 @@ function PhasePanel({ phase }) {
       )}
 
       {/* Phase number */}
-      <div style={{
-        fontFamily: "'Bangers', cursive",
-        fontSize: '3rem',
-        color: phaseColor,
-        lineHeight: 1,
-      }}>
+      <div style={{ fontFamily: "'Bangers', cursive", fontSize: '3rem', color: phaseColor, lineHeight: 1 }}>
         {phase.phase}
       </div>
 
@@ -209,42 +202,23 @@ function PhasePanel({ phase }) {
         color: '#888',
         lineHeight: 1.6,
         marginTop: '0.8rem',
-        paddingBottom: '2.5rem', /* room for starburst */
+        paddingBottom: '2.5rem',
       }}>
         {phase.description}
       </div>
 
-      {/* Status badge */}
       <StatusBadge status={status} />
-
-      {/* Starburst */}
       <Starburst word={phase.actionWord} status={status} />
     </div>
   )
 }
 
-// ─── Connector ────────────────────────────────────────────────────────────────
+// ─── Connector (always horizontal) ────────────────────────────────────────────
 
-function Connector({ prevStatus, isDesktop }) {
+function Connector({ prevStatus }) {
   const color = prevStatus === 'completed' ? '#00D4FF'
               : prevStatus === 'active'    ? '#FF2D55'
               : '#333'
-
-  if (!isDesktop) {
-    return (
-      <div style={{
-        borderLeft: `2px dashed ${color}`,
-        height: '40px',
-        marginLeft: '1.5rem',
-        display: 'flex',
-        alignItems: 'flex-end',
-        paddingBottom: '2px',
-      }}>
-        <span style={{ color, fontFamily: 'monospace', fontSize: '0.8rem', marginLeft: '-0.45rem' }}>›</span>
-      </div>
-    )
-  }
-
   return (
     <div style={{
       width: '60px',
@@ -254,10 +228,7 @@ function Connector({ prevStatus, isDesktop }) {
       position: 'relative',
       height: '3px',
     }}>
-      <div style={{
-        width: '100%',
-        borderTop: `2px dashed ${color}`,
-      }} />
+      <div style={{ width: '100%', borderTop: `2px dashed ${color}` }} />
       <span style={{
         position: 'absolute',
         right: '-4px',
@@ -274,92 +245,83 @@ function Connector({ prevStatus, isDesktop }) {
 // ─── Timeline ─────────────────────────────────────────────────────────────────
 
 export default function Timeline() {
-  const sectionRef   = useRef(null)
-  const stripRef     = useRef(null)
-  const labelRef     = useRef(null)
-  const progressRef  = useRef(null)
-  const stRef        = useRef(null)   // store the horizontal ST instance
+  const sectionRef  = useRef(null)
+  const stripRef    = useRef(null)
+  const labelRef    = useRef(null)
+  const progressRef = useRef(null)
+  const [hintVisible, setHintVisible] = useState(true)
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
-      const isDesktop = window.innerWidth >= 1024
-
-      // Label fade-in (both layouts)
+      // Label fade-in (always)
       gsap.from(labelRef.current, {
         y: 30, opacity: 0, duration: 0.6,
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       })
 
-      if (isDesktop) {
-        // Horizontal scroll pin
-        const strip = stripRef.current
-        const section = sectionRef.current
+      const strip     = stripRef.current
+      const section   = sectionRef.current
+      const isMobile  = window.innerWidth < 1024
+      const hPad      = isMobile ? 48 : 96   // clamp padding total px estimate
+      const scrubVal  = isMobile ? 1.5 : 1
 
-        const tween = gsap.to(strip, {
-          x: () => -(strip.scrollWidth - window.innerWidth + 96), // 96 = section h-padding total
-          ease: 'none',
+      const scrollDist = () => strip.scrollWidth - window.innerWidth + hPad
+
+      const tween = gsap.to(strip, {
+        x: () => -scrollDist(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 10%',
+          end: () => `+=${scrollDist()}`,
+          scrub: scrubVal,
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            if (progressRef.current) {
+              progressRef.current.style.width = `${self.progress * 100}%`
+            }
+            // Hide hint once 10% through
+            if (self.progress > 0.1) setHintVisible(false)
+          },
+        },
+      })
+
+      // Panel + starburst entrance animations tied to horizontal scroll
+      const panels = strip.querySelectorAll('.tl-panel')
+      panels.forEach((panel) => {
+        gsap.from(panel, {
+          opacity: 0, y: 20, duration: 0.5,
           scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: () => `+=${strip.scrollWidth - window.innerWidth + 96}`,
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            onUpdate: (self) => {
-              if (progressRef.current) {
-                progressRef.current.style.width = `${self.progress * 100}%`
-              }
-            },
+            trigger: panel,
+            containerAnimation: tween,
+            start: 'left 90%',
+            toggleActions: 'play none none none',
           },
         })
-
-        stRef.current = ScrollTrigger.getAll().find(st => st.pin === section)
-
-        // Panel + starburst entrance animations tied to horizontal scroll
-        const panels = strip.querySelectorAll('.tl-panel')
-        panels.forEach((panel, i) => {
-          gsap.from(panel, {
-            opacity: 0, y: 20, duration: 0.5,
+        const star = panel.querySelector('.tl-starburst')
+        if (star) {
+          gsap.from(star, {
+            scale: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)',
             scrollTrigger: {
               trigger: panel,
               containerAnimation: tween,
-              start: 'left 90%',
+              start: 'left 80%',
               toggleActions: 'play none none none',
             },
           })
+        }
+      })
 
-          const star = panel.querySelector('.tl-starburst')
-          if (star) {
-            gsap.from(star, {
-              scale: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)',
-              scrollTrigger: {
-                trigger: panel,
-                containerAnimation: tween,
-                start: 'left 80%',
-                toggleActions: 'play none none none',
-              },
-            })
-          }
-        })
-
-      } else {
-        // Mobile: vertical stagger
-        const panels = stripRef.current.querySelectorAll('.tl-panel')
-        gsap.from(panels, {
-          y: 40, opacity: 0, duration: 0.6, stagger: 0.12,
-          scrollTrigger: { trigger: stripRef.current, start: 'top 80%' },
-        })
-
-        const stars = stripRef.current.querySelectorAll('.tl-starburst')
-        gsap.from(stars, {
-          scale: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)', stagger: 0.12,
-          scrollTrigger: { trigger: stripRef.current, start: 'top 75%' },
-        })
-      }
+      // Refresh on resize so end value recalculates
+      window.addEventListener('resize', ScrollTrigger.refresh)
 
     }, sectionRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      window.removeEventListener('resize', ScrollTrigger.refresh)
+    }
   }, [])
 
   return (
@@ -409,21 +371,14 @@ export default function Timeline() {
           </div>
         </div>
 
-        {/* Progress bar (desktop) */}
+        {/* Progress bar */}
         <div
-          className="tl-progress-track"
-          style={{
-            background: '#1A1A1A',
-            height: '3px',
-            marginBottom: '2.5rem',
-            position: 'relative',
-          }}
+          style={{ background: '#1A1A1A', height: '3px', marginBottom: '2.5rem', position: 'relative' }}
         >
           <div
             ref={progressRef}
             style={{
-              position: 'absolute',
-              left: 0, top: 0, bottom: 0,
+              position: 'absolute', left: 0, top: 0, bottom: 0,
               width: '0%',
               background: '#FF2D55',
               transition: 'width 0.05s linear',
@@ -435,19 +390,37 @@ export default function Timeline() {
         <div
           ref={stripRef}
           className="tl-strip"
-          style={{ display: 'flex', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            overflow: 'visible',
+            willChange: 'transform',
+          }}
         >
           {timeline.map((phase, i) => (
             <div key={phase.phase} style={{ display: 'flex', alignItems: 'center' }}>
               <PhasePanel phase={phase} />
-              {i < timeline.length - 1 && (
-                <Connector
-                  prevStatus={phase.status}
-                  isDesktop={true} /* CSS toggles this visually */
-                />
-              )}
+              {i < timeline.length - 1 && <Connector prevStatus={phase.status} />}
             </div>
           ))}
+        </div>
+
+        {/* Hint — visible on mobile, hidden on desktop */}
+        <div
+          className="tl-hint"
+          style={{
+            textAlign: 'center',
+            marginTop: '1rem',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSize: '0.65rem',
+            letterSpacing: '0.2em',
+            color: '#555',
+            opacity: hintVisible ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+          }}
+        >
+          ↓ SCROLL TO PROGRESS →
         </div>
       </div>
 
@@ -465,25 +438,16 @@ export default function Timeline() {
         }
         .tl-panel--active { animation: active-glow 1.5s ease-out infinite; }
 
-        /* Mobile layout */
+        /* Mobile: wider panels, show hint */
         @media (max-width: 1023px) {
-          .tl-strip {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            gap: 0 !important;
-          }
-          .tl-strip > div {
-            flex-direction: column !important;
-          }
-          .tl-panel {
-            width: 100% !important;
-          }
-          .tl-progress-track { display: none; }
+          :root { --tl-panel-width: 85vw; }
+          .tl-hint { display: block; }
         }
 
-        /* Desktop: hide mobile connectors, show desktop connectors */
+        /* Desktop: fixed-width panels, hide hint */
         @media (min-width: 1024px) {
-          .tl-strip { flex-direction: row; align-items: center; }
+          :root { --tl-panel-width: 280px; }
+          .tl-hint { display: none !important; }
         }
       `}</style>
     </section>
