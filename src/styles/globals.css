@@ -39,14 +39,19 @@
 
 /* Noir Mode overrides */
 [data-theme="noir"] {
+  --color-primary: #ffffff;
+  --color-accent:  #aaaaaa;
+  --color-yellow:  #ffffff;
+  --color-dark:    #000000;
+  --color-ink:     #111111;
   --color-bg:      #000;
   --color-surface: #111;
   --color-text:    #e0e0e0;
-  --color-yellow:  #fff;
   --color-cyan:    #aaa;
   --color-purple:  #555;
   --color-blue:    #333;
-  filter: grayscale(100%);
+  filter: grayscale(1) contrast(1.1);
+  transition: filter 0.5s ease;
 }
 
 /* ------------------------------------------------------------

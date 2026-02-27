@@ -112,7 +112,10 @@ export default function Navbar() {
   const [isGlitching, setIsGlitching] = useState(false)
   // Effect 4 — register button dimension shift
   const [dimFrame,    setDimFrame]    = useState(0)
-  const dimIntervalRef = useRef(null)
+  const dimIntervalRef  = useRef(null)
+  // Egg 3 — origin story click streak
+  const clickCountRef   = useRef(0)
+  const clickTimerRef   = useRef(null)
 
   // Scroll listener
   useEffect(() => {
@@ -132,12 +135,23 @@ export default function Navbar() {
     setTimeout(() => scrollTo(id), 150)
   }
 
-  // Effect 3 — wordmark glitch trigger
+  // Effect 3 — wordmark glitch trigger + Egg 3 click streak
   function handleWordmarkClick() {
     scrollTo('top')
-    if (isGlitching) return
-    setIsGlitching(true)
-    setTimeout(() => setIsGlitching(false), 400)
+    // Glitch burst
+    if (!isGlitching) {
+      setIsGlitching(true)
+      setTimeout(() => setIsGlitching(false), 400)
+    }
+    // Origin story: 5 clicks within 2 seconds
+    clickCountRef.current += 1
+    clearTimeout(clickTimerRef.current)
+    clickTimerRef.current = setTimeout(() => { clickCountRef.current = 0 }, 2000)
+    if (clickCountRef.current >= 5) {
+      clickCountRef.current = 0
+      clearTimeout(clickTimerRef.current)
+      window.dispatchEvent(new CustomEvent('velora-origin-story'))
+    }
   }
 
   // Effect 4 — dimension shift handlers

@@ -1,4 +1,5 @@
 import './styles/globals.css'
+import EasterEggs from './components/EasterEggs'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -14,6 +15,7 @@ import Footer from './components/Footer'
 function App() {
   return (
     <>
+      <EasterEggs />
       <Navbar />
       <Hero />
       <About />
