@@ -224,8 +224,8 @@ export default function Footer() {
             }}>
               Questions?
             </div>
-            <FooterLink href="mailto:cipher@mitaoe.ac.in">
-              cipher@mitaoe.ac.in
+            <FooterLink href="mailto:cipherit.mitaoe@gmail.com">
+              cipherit.mitaoe@gmail.com
             </FooterLink>
           </div>
         </div>

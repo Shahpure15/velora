@@ -304,7 +304,7 @@ export default function FAQ() {
             Still have questions?
           </p>
           <a
-            href="mailto:cipher@mitaoe.ac.in"
+            href="mailto:cipherit.mitaoe@gmail.com"
             className="faq-contact-btn"
             style={{
               display: 'inline-block',
