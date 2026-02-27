@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create vite@latest . -- --template react)",
+      "Bash(npx create-vite@latest . --template react 2)",
+      "Bash(1:*)",
+      "Bash(printf 'y\\\\n')",
+      "Bash(npx create-vite@latest . --template react)",
+      "Bash(node -e \":*)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npx --yes create-vite@latest . --template react)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npm create vite@latest . --template react -- --yes)",
+      "Bash(npx create-vite@latest velora-temp --template react)",
+      "Bash(npm install)",
+      "Bash(npm install gsap @gsap/react lenis framer-motion)",
+      "Bash(npm install -D tailwindcss @tailwindcss/vite)",
+      "Bash(timeout 10 npm run dev)"
+    ]
+  }
+}
