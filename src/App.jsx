@@ -1,5 +1,6 @@
 import './styles/globals.css'
 import EasterEggs from './components/EasterEggs'
+import CursorWeb from './components/CursorWeb'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -16,17 +17,20 @@ function App() {
   return (
     <>
       <EasterEggs />
-      <Navbar />
-      <Hero />
-      <About />
-      <Tracks />
-      <Timeline />
-      <Prizes />
-      <Judges />
-      <Sponsors />
-      <FAQ />
-      <Register />
-      <Footer />
+      <CursorWeb />
+      <div style={{ position: 'relative' }}>
+        <Navbar />
+        <Hero />
+        <About />
+        <Tracks />
+        <Timeline />
+        <Prizes />
+        <Judges />
+        <Sponsors />
+        <FAQ />
+        <Register />
+        <Footer />
+      </div>
     </>
   )
 }

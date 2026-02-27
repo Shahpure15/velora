@@ -259,68 +259,83 @@ export default function Timeline() {
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       })
 
-      const strip     = stripRef.current
-      const section   = sectionRef.current
-      const isMobile  = window.innerWidth < 1024
-      const scrubVal  = isMobile ? 1.5 : 1
+      const strip   = stripRef.current
+      const section = sectionRef.current
+      const isMobile = window.innerWidth < 1024
+      const scrubVal = isMobile ? 1.5 : 1
 
-      const travelDist = () => strip.scrollWidth - window.innerWidth
+      function buildScrollTrigger() {
+        // Kill existing horizontal ST if present
+        const existing = ScrollTrigger.getById('tl-horizontal')
+        if (existing) existing.kill()
 
-      const tween = gsap.to(strip, {
-        x: () => -travelDist(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 10%',
-          end: () => `+=${travelDist()}`,
-          scrub: scrubVal,
-          pin: true,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            if (progressRef.current) {
-              progressRef.current.style.width = `${self.progress * 100}%`
-            }
-            // Hide hint once 10% through
-            if (self.progress > 0.1) setHintVisible(false)
-          },
-        },
-      })
+        const travelDist = strip.scrollWidth - window.innerWidth
 
-      // Panel + starburst entrance animations tied to horizontal scroll
-      const panels = strip.querySelectorAll('.tl-panel')
-      panels.forEach((panel) => {
-        gsap.from(panel, {
-          opacity: 0, y: 20, duration: 0.5,
+        const tween = gsap.to(strip, {
+          x: -travelDist,
+          ease: 'none',
           scrollTrigger: {
-            trigger: panel,
-            containerAnimation: tween,
-            start: 'left 90%',
-            toggleActions: 'play none none none',
+            id: 'tl-horizontal',
+            trigger: section,
+            start: 'top 10%',
+            end: `+=${travelDist}`,
+            scrub: scrubVal,
+            pin: true,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.width = `${self.progress * 100}%`
+              }
+              if (self.progress > 0.1) setHintVisible(false)
+            },
           },
         })
-        const star = panel.querySelector('.tl-starburst')
-        if (star) {
-          gsap.from(star, {
-            scale: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)',
+
+        // Panel + starburst entrance animations
+        const panels = strip.querySelectorAll('.tl-panel')
+        panels.forEach((panel) => {
+          gsap.from(panel, {
+            opacity: 0, y: 20, duration: 0.5,
             scrollTrigger: {
               trigger: panel,
               containerAnimation: tween,
-              start: 'left 80%',
+              start: 'left 90%',
               toggleActions: 'play none none none',
             },
           })
-        }
-      })
+          const star = panel.querySelector('.tl-starburst')
+          if (star) {
+            gsap.from(star, {
+              scale: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)',
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: tween,
+                start: 'left 80%',
+                toggleActions: 'play none none none',
+              },
+            })
+          }
+        })
+      }
 
-      // Refresh on resize so end value recalculates
-      window.addEventListener('resize', ScrollTrigger.refresh)
+      // Delay measurement until after paint so scrollWidth is accurate
+      const timer = setTimeout(buildScrollTrigger, 300)
+
+      function onResize() {
+        ScrollTrigger.refresh()
+        clearTimeout(timer)
+        setTimeout(buildScrollTrigger, 300)
+      }
+      window.addEventListener('resize', onResize)
+
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('resize', onResize)
+      }
 
     }, sectionRef)
 
-    return () => {
-      ctx.revert()
-      window.removeEventListener('resize', ScrollTrigger.refresh)
-    }
+    return () => ctx.revert()
   }, [])
 
   return (
@@ -395,7 +410,7 @@ export default function Timeline() {
             alignItems: 'center',
             overflow: 'visible',
             willChange: 'transform',
-            paddingRight: '120px',
+            paddingRight: '15vw',
           }}
         >
           {timeline.map((phase, i) => (
