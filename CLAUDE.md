@@ -172,7 +172,7 @@ Mounted globally in `App.jsx`. Four easter eggs:
 
 - Project Setup ✅
 - Navbar ✅ | Hero ✅ | About ✅ | Tracks ✅ | Timeline ✅
-- Prizes ✅ | Judges ✅ | Sponsors ⬜ | FAQ ⬜ | Register ⬜
+- Prizes ✅ | Judges ✅ | Sponsors ✅ | FAQ ✅ | Register ⬜
 - Footer ⬜ | Easter Eggs ⬜
 
 ---
@@ -192,4 +192,5 @@ Mounted globally in `App.jsx`. Four easter eggs:
 27-Feb-2026 — Timeline complete. Next: Prizes section.
 27-Feb-2026 — Prizes complete. Timeline mobile pinning fixed. Next: Judges section.
 27-Feb-2026 — Judges complete. Next: Sponsors section.
+27-Feb-2026 — FAQ complete, Timeline mobile fixed, Register button fixed. Next: Register section then Footer.
 NOTE: After all components done, add WebThread.jsx — a global SVG spider-web path drawn by ScrollTrigger scrub connecting all sections (fixed/absolute overlay, z-index between content layers, stroke-dashoffset animated by scroll progress).

@@ -8,6 +8,8 @@ import Prizes from './components/Prizes'
 import Judges from './components/Judges'
 import Sponsors from './components/Sponsors'
 import FAQ from './components/FAQ'
+import Register from './components/Register'
+import Footer from './components/Footer'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
       <Judges />
       <Sponsors />
       <FAQ />
+      <Register />
+      <Footer />
     </>
   )
 }

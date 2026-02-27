@@ -219,6 +219,7 @@ export default function Navbar() {
         {/* Right — Register Now CTA (Effect 4) */}
         <button
           className="register-btn-desktop"
+          onClick={() => window.lenis?.scrollTo('#register', { duration: 1.5 })}
           onMouseEnter={startDimShift}
           onMouseLeave={stopDimShift}
           style={{
@@ -311,7 +312,10 @@ export default function Navbar() {
               </button>
             ))}
             <button
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false)
+                window.lenis?.scrollTo('#register', { duration: 1.5 })
+              }}
               style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 700,
