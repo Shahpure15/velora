@@ -262,18 +262,17 @@ export default function Timeline() {
       const strip     = stripRef.current
       const section   = sectionRef.current
       const isMobile  = window.innerWidth < 1024
-      const hPad      = isMobile ? 48 : 96   // clamp padding total px estimate
       const scrubVal  = isMobile ? 1.5 : 1
 
-      const scrollDist = () => strip.scrollWidth - window.innerWidth + hPad
+      const travelDist = () => strip.scrollWidth - window.innerWidth
 
       const tween = gsap.to(strip, {
-        x: () => -scrollDist(),
+        x: () => -travelDist(),
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top 10%',
-          end: () => `+=${scrollDist()}`,
+          end: () => `+=${travelDist()}`,
           scrub: scrubVal,
           pin: true,
           anticipatePin: 1,
@@ -396,6 +395,7 @@ export default function Timeline() {
             alignItems: 'center',
             overflow: 'visible',
             willChange: 'transform',
+            paddingRight: '120px',
           }}
         >
           {timeline.map((phase, i) => (

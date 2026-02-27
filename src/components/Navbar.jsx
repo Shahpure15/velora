@@ -6,6 +6,8 @@ const NAV_LINKS = [
   { label: 'Tracks',   id: 'tracks' },
   { label: 'Timeline', id: 'timeline' },
   { label: 'Prizes',   id: 'prizes' },
+  { label: 'Judges',   id: 'judges' },
+  { label: 'Sponsors', id: 'sponsors' },
   { label: 'FAQ',      id: 'faq' },
 ]
 
@@ -215,8 +217,7 @@ export default function Navbar() {
         </ul>
 
         {/* Right — Register Now CTA (Effect 4) */}
-        <a
-          href="#"
+        <button
           className="register-btn-desktop"
           onMouseEnter={startDimShift}
           onMouseLeave={stopDimShift}
@@ -230,10 +231,10 @@ export default function Navbar() {
             boxShadow: '3px 3px 0 #000',
             padding: '0.5rem 1.2rem',
             borderRadius: 0,
-            textDecoration: 'none',
             letterSpacing: '0.05em',
             display: 'inline-block',
             transition: 'box-shadow 0.1s, transform 0.1s',
+            cursor: 'pointer',
           }}
           onMouseDown={e => {
             e.currentTarget.style.boxShadow = '1px 1px 0 #000'
@@ -245,7 +246,7 @@ export default function Navbar() {
           }}
         >
           Register Now
-        </a>
+        </button>
 
         {/* Hamburger — mobile only */}
         <button
@@ -309,8 +310,7 @@ export default function Navbar() {
                 {label}
               </button>
             ))}
-            <a
-              href="#"
+            <button
               onClick={() => setMenuOpen(false)}
               style={{
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -321,13 +321,14 @@ export default function Navbar() {
                 border: '2px solid #000',
                 boxShadow: '3px 3px 0 #000',
                 padding: '0.75rem 2rem',
-                textDecoration: 'none',
                 letterSpacing: '0.05em',
                 marginTop: '1rem',
+                cursor: 'pointer',
+                borderRadius: 0,
               }}
             >
               Register Now
-            </a>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
