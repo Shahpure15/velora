@@ -4,6 +4,10 @@ import Lenis from 'lenis'
 import './index.css'
 import App from './App.jsx'
 
+// Always start at top on load — prevent browser scroll restoration
+window.history.scrollRestoration = 'manual'
+window.scrollTo(0, 0)
+
 // Initialize Lenis smooth scroll
 const lenis = new Lenis({
   duration: 1.2,

@@ -130,6 +130,14 @@ export default function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
+  // Cleanup intervals/timers on unmount
+  useEffect(() => {
+    return () => {
+      clearInterval(dimIntervalRef.current)
+      clearTimeout(clickTimerRef.current)
+    }
+  }, [])
+
   function handleNavClick(id) {
     setMenuOpen(false)
     setTimeout(() => scrollTo(id), 150)

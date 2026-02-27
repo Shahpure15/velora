@@ -16,7 +16,8 @@
       "Bash(npm install)",
       "Bash(npm install gsap @gsap/react lenis framer-motion)",
       "Bash(npm install -D tailwindcss @tailwindcss/vite)",
-      "Bash(timeout 10 npm run dev)"
+      "Bash(timeout 10 npm run dev)",
+      "Bash(npm run build)"
     ]
   }
 }
