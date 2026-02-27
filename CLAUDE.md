@@ -170,7 +170,7 @@ Mounted globally in `App.jsx`. Four easter eggs:
 
 ## Component Build Status
 
-- Project Setup ⬜
+- Project Setup ✅
 - Navbar ⬜ | Hero ⬜ | About ⬜ | Tracks ⬜ | Timeline ⬜
 - Prizes ⬜ | Judges ⬜ | Sponsors ⬜ | FAQ ⬜ | Register ⬜
 - Footer ⬜ | Easter Eggs ⬜
@@ -185,4 +185,4 @@ Mounted globally in `App.jsx`. Four easter eggs:
 
 ## Session Notes
 
-*(format: DATE — what was worked on — what is next)*
+27-Feb-2026 — Project scaffolded. Vite + React + Tailwind + GSAP + Lenis + Framer Motion all installed. Data files created. globals.css written. Dev server running at localhost:5174. Next: build Navbar and Hero components.
