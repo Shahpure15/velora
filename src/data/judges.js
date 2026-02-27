@@ -5,11 +5,20 @@ export const judges = [
     title: 'TBA',
     institution: 'TBA',
     superpower: 'TBA',
-    photo: null, // path to WebP when available
+    photo: null,
     isClassified: true,
   },
   {
     id: 2,
+    name: 'Classified',
+    title: 'TBA',
+    institution: 'TBA',
+    superpower: 'TBA',
+    photo: null,
+    isClassified: true,
+  },
+  {
+    id: 3,
     name: 'Classified',
     title: 'TBA',
     institution: 'TBA',

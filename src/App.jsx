@@ -5,6 +5,7 @@ import About from './components/About'
 import Tracks from './components/Tracks'
 import Timeline from './components/Timeline'
 import Prizes from './components/Prizes'
+import Judges from './components/Judges'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Tracks />
       <Timeline />
       <Prizes />
+      <Judges />
       <div
         id="faq"
         style={{
