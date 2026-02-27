@@ -1,12 +1,25 @@
 import './styles/globals.css'
 import Navbar from './components/Navbar'
+import Hero from './components/Hero'
 
 function App() {
   return (
     <>
       <Navbar />
-      <div id="top" style={{ minHeight: '300vh', paddingTop: '80px', color: '#f0f0f0', padding: '100px 2rem 2rem' }}>
-        <p style={{ opacity: 0.4, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Velora — sections coming soon</p>
+      <Hero />
+      <div
+        id="about"
+        style={{
+          minHeight: '100vh',
+          background: '#0A0A0A',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <p style={{ opacity: 0.2, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#F5F5F5' }}>
+          About section — coming soon
+        </p>
       </div>
     </>
   )
