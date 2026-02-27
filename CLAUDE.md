@@ -195,4 +195,5 @@ Mounted globally in `App.jsx`. Four easter eggs:
 27-Feb-2026 — FAQ complete, Timeline mobile fixed, Register button fixed. Next: Register section then Footer.
 27-Feb-2026 — Register and Footer complete. Full page structure done. Next: Easter Eggs component then WebThread scrollytelling layer.
 27-Feb-2026 — Easter Eggs complete. All components done. Next: WebThread scrollytelling layer — global SVG spider-web path drawn by ScrollTrigger scrub connecting all sections.
-NOTE: After all components done, add WebThread.jsx — a global SVG spider-web path drawn by ScrollTrigger scrub connecting all sections (fixed/absolute overlay, z-index between content layers, stroke-dashoffset animated by scroll progress).
+27-Feb-2026 — CursorWeb improved to continuous consuming trail. Timeline mobile fixed. SpiderHanger removed. All components complete. Next: performance audit and Vercel deployment.
+NOTE: WebThread approach scrapped — replaced with CursorWeb canvas effect (continuous Catmull-Rom trail with gravity droop, tail consumption, silk highlight).
