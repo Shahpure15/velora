@@ -391,63 +391,55 @@ export default function Register() {
 
         {/* e) CTA button */}
         <div className="reg-anim" style={{ marginTop: '2.5rem' }}>
-          <motion.a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={e => e.preventDefault()}
-            whileHover={{ y: -3, boxShadow: '9px 9px 0 #000', backgroundColor: '#FFF000' }}
-            whileTap={{ scale: 0.97 }}
+          <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: '#FFE600',
-              color: '#0A0A0A',
+              background: '#333',
+              color: '#888',
               fontFamily: "'Bangers', cursive",
               fontSize: '1.4rem',
               letterSpacing: '0.15em',
-              border: '3px solid #000',
-              boxShadow: '6px 6px 0 #000',
+              border: '3px solid #444',
+              boxShadow: '6px 6px 0 #1A1A1A',
               padding: '1rem 3rem',
               borderRadius: 0,
-              textDecoration: 'none',
-              cursor: 'pointer',
+              cursor: 'not-allowed',
               lineHeight: 1,
+              opacity: 0.6,
             }}
           >
-            REGISTER ON UNSTOP →
-          </motion.a>
+            REGISTRATIONS OPENING SOON
+          </div>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.75rem',
             color: '#555',
             marginTop: '0.8rem',
           }}>
-            No experience required · Just bring your A-game
+            Stay tuned · We'll announce when registrations go live
           </p>
         </div>
 
-        {/* f) Countdown reminder */}
+        {/* f) Registration status */}
         <div className="reg-anim" style={{
           marginTop: '2.5rem',
-          border: '2px solid #333',
-          background: '#111',
+          border: '2px solid #FFE60033',
+          background: '#FFE6000a',
           padding: '1rem 2rem',
           display: 'inline-block',
         }}>
           <span style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '0.65rem',
+            fontSize: '0.7rem',
             letterSpacing: '0.2em',
-            color: '#555',
+            color: '#FFE600',
             display: 'block',
-            marginBottom: '0.5rem',
             textTransform: 'uppercase',
           }}>
-            REGISTRATIONS CLOSING IN
+            ⚡ REGISTRATIONS OPENING SOON
           </span>
-          <MiniCountdown />
         </div>
 
       </div>

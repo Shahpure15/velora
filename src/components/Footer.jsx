@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import cipherIcon from '../assets/Cipher.png'
 
 // ─── Nav sections for footer links ────────────────────────────────────────────
 
@@ -143,8 +144,13 @@ export default function Footer() {
             fontSize: '0.8rem',
             color: '#555',
             marginTop: '0.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
           }}>
-            An annual hackathon by Cipher × IEEE
+            An annual hackathon by
+            <img src={cipherIcon} alt="Cipher" style={{ height: '16px', objectFit: 'contain', opacity: 0.6 }} />
+            Cipher × IEEE
           </div>
           <div style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",

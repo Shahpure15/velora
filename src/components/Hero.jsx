@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ieeeLogo from '../assets/landscape/ieee.png'
+import cipherIcon from '../assets/Cipher.png'
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
 
@@ -67,33 +68,50 @@ function FlipDigit({ value, label }) {
 }
 
 function Countdown() {
-  const [time, setTime] = useState(getTimeLeft)
-
-  useEffect(() => {
-    const id = setInterval(() => setTime(getTimeLeft()), 1000)
-    return () => clearInterval(id)
-  }, [])
-
-  const sep = (
-    <span style={{
-      fontFamily: "'Bangers', cursive",
-      fontSize: '2rem',
-      color: '#FF2D55',
-      alignSelf: 'center',
-      marginBottom: '1.5rem',
-      lineHeight: 1,
-    }}>:</span>
-  )
-
   return (
-    <div className="hero-countdown" style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-      <FlipDigit value={time.days} label="DAYS" />
-      {sep}
-      <FlipDigit value={time.hrs}  label="HRS"  />
-      {sep}
-      <FlipDigit value={time.mins} label="MINS" />
-      {sep}
-      <FlipDigit value={time.secs} label="SECS" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
+      <div className="hero-countdown" style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch', opacity: 0.4, filter: 'blur(1px)' }}>
+        <FlipDigit value={'--'} label="DAYS" />
+        <span style={{
+          fontFamily: "'Bangers', cursive",
+          fontSize: '2rem',
+          color: '#FF2D55',
+          alignSelf: 'center',
+          marginBottom: '1.5rem',
+          lineHeight: 1,
+        }}>:</span>
+        <FlipDigit value={'--'} label="HRS" />
+        <span style={{
+          fontFamily: "'Bangers', cursive",
+          fontSize: '2rem',
+          color: '#FF2D55',
+          alignSelf: 'center',
+          marginBottom: '1.5rem',
+          lineHeight: 1,
+        }}>:</span>
+        <FlipDigit value={'--'} label="MINS" />
+        <span style={{
+          fontFamily: "'Bangers', cursive",
+          fontSize: '2rem',
+          color: '#FF2D55',
+          alignSelf: 'center',
+          marginBottom: '1.5rem',
+          lineHeight: 1,
+        }}>:</span>
+        <FlipDigit value={'--'} label="SECS" />
+      </div>
+      <div style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: '0.75rem',
+        letterSpacing: '0.2em',
+        color: '#FFE600',
+        textTransform: 'uppercase',
+        border: '1px solid #FFE60033',
+        padding: '0.3rem 1rem',
+        background: '#FFE6000a',
+      }}>
+        REGISTRATIONS OPENING SOON
+      </div>
     </div>
   )
 }
@@ -479,6 +497,12 @@ export default function Hero() {
             color: '#0A0A0A',
             padding: '0.3rem 1rem',
           }}>
+            {/* Cipher Icon */}
+            <img
+              src={cipherIcon}
+              alt="Cipher"
+              style={{ height: '18px', filter: 'brightness(0)', objectFit: 'contain' }}
+            />
             <span>CIPHER</span>
             <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>×</span>
             {/* IEEE Logo */}

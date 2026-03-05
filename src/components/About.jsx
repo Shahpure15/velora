@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import cipherIcon from '../assets/Cipher.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -20,7 +21,7 @@ const PANELS = [
   {
     num:     '02',
     accent:  '#00D4FF',
-    icon:    { text: '{ }', size: '3.5rem', color: '#00D4FF', shadow: 'none' },
+    icon:    { image: cipherIcon, size: '4rem', color: '#00D4FF', shadow: 'none' },
     heading: 'WHO IS CIPHER?',
     body:    'Cipher is the IT Students Executive Council of MIT Academy of Engineering, Alandi. In association with IEEE, we build platforms that push boundaries — and Velora is our launchpad.',
     action:  { word: 'ZAP!', bg: '#00D4FF', color: '#0A0A0A', rotate: '6deg' },
@@ -111,15 +112,27 @@ function ComicPanel({ panel, className }) {
 
         {/* Icon */}
         <div style={{ textAlign: 'center', marginTop: '0.5rem', marginBottom: '0.25rem' }}>
-          <span style={{
-            fontFamily: "'Bangers', cursive",
-            fontSize: panel.icon.size,
-            color: panel.icon.color,
-            textShadow: panel.icon.shadow,
-            lineHeight: 1,
-          }}>
-            {panel.icon.text}
-          </span>
+          {panel.icon.image ? (
+            <img
+              src={panel.icon.image}
+              alt=""
+              style={{
+                height: panel.icon.size,
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 8px rgba(0, 212, 255, 0.3))',
+              }}
+            />
+          ) : (
+            <span style={{
+              fontFamily: "'Bangers', cursive",
+              fontSize: panel.icon.size,
+              color: panel.icon.color,
+              textShadow: panel.icon.shadow,
+              lineHeight: 1,
+            }}>
+              {panel.icon.text}
+            </span>
+          )}
         </div>
 
         {/* Heading */}
