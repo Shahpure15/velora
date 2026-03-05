@@ -1,3 +1,6 @@
+// NOTE: Problem statements are being finalized. Keep 'TBA' value to show "CLASSIFIED" aesthetic.
+// When ready, replace 'TBA' with the actual problem statement text.
+
 export const tracks = [
   {
     id: 'universe-1',
@@ -6,7 +9,7 @@ export const tracks = [
     tagline: 'Where the ground-breakers come from. Your dimension awaits.',
     primaryColor: '#FF2D55',
     accentColor: '#FFE600',
-    problemStatement: 'TBA',
+    problemStatement: 'TBA', // Replace with actual problem statement when decided
     prizes: 'TBA',
   },
   {
@@ -16,7 +19,7 @@ export const tracks = [
     tagline: 'The frontier dimension. Built for those who think sideways.',
     primaryColor: '#00D4FF',
     accentColor: '#0A0A0A',
-    problemStatement: 'TBA',
+    problemStatement: 'TBA', // Replace with actual problem statement when decided
     prizes: 'TBA',
   },
   {
@@ -26,7 +29,7 @@ export const tracks = [
     tagline: 'A dimension of pure signal. Loud ideas. Louder execution.',
     primaryColor: '#FFE600',
     accentColor: '#0A0A0A',
-    problemStatement: 'TBA',
+    problemStatement: 'TBA', // Replace with actual problem statement when decided
     prizes: 'TBA',
   },
   {
@@ -36,7 +39,7 @@ export const tracks = [
     tagline: 'The wildcard realm. No map. No rules. Just build.',
     primaryColor: '#FF6B35',
     accentColor: '#0A0A0A',
-    problemStatement: 'TBA',
+    problemStatement: 'TBA', // Replace with actual problem statement when decided
     prizes: 'TBA',
   },
 ]

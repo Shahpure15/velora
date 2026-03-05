@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ieeeLogo from '../assets/landscape/ieee.png'
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
 
@@ -85,7 +86,7 @@ function Countdown() {
   )
 
   return (
-    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+    <div className="hero-countdown" style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
       <FlipDigit value={time.days} label="DAYS" />
       {sep}
       <FlipDigit value={time.hrs}  label="HRS"  />
@@ -93,6 +94,156 @@ function Countdown() {
       <FlipDigit value={time.mins} label="MINS" />
       {sep}
       <FlipDigit value={time.secs} label="SECS" />
+    </div>
+  )
+}
+
+// ─── City Skyline (Spider-Verse NYC aesthetic) ─────────────────────────────────
+
+function CityScape() {
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: '65%',
+      zIndex: 2,
+      pointerEvents: 'none',
+      overflow: 'hidden',
+    }}>
+      {/* Far layer — distant tiny buildings */}
+      <motion.svg
+        viewBox="0 0 1440 300"
+        preserveAspectRatio="xMidYMax meet"
+        style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%', opacity: 0.14 }}
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <path
+          fill="#1A1A4E"
+          d="M0,300 L0,240 L40,240 L40,220 L70,220 L70,200 L90,200 L90,190 L110,190 L110,205 L140,205
+             L140,185 L165,185 L165,170 L185,170 L185,165 L205,165 L205,175 L235,175 L235,195 L270,195
+             L270,170 L295,170 L295,155 L315,155 L315,148 L335,148 L335,158 L360,158 L360,175 L400,175
+             L400,155 L425,155 L425,140 L445,140 L445,133 L465,133 L465,143 L490,143 L490,165 L525,165
+             L525,140 L550,140 L550,125 L570,125 L570,116 L590,116 L590,126 L615,126 L615,148 L650,148
+             L650,125 L675,125 L675,108 L695,108 L695,100 L715,100 L715,110 L742,110 L742,130 L775,130
+             L775,108 L800,108 L800,92 L820,92 L820,83 L840,83 L840,95 L868,95 L868,118 L900,118
+             L900,95 L928,95 L928,78 L948,78 L948,68 L968,68 L968,80 L995,80 L995,105 L1030,105
+             L1030,80 L1057,80 L1057,65 L1077,65 L1077,57 L1097,57 L1097,68 L1122,68 L1122,90 L1155,90
+             L1155,68 L1178,68 L1178,85 L1208,85 L1208,110 L1245,110 L1245,90 L1270,90 L1270,108 L1305,108
+             L1305,130 L1340,130 L1340,155 L1380,155 L1380,180 L1440,180 L1440,300 Z"
+        />
+      </motion.svg>
+
+      {/* Mid layer — medium buildings */}
+      <motion.svg
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="xMidYMax meet"
+        style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%', opacity: 0.22 }}
+        animate={{ y: [0, -7, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <defs>
+          <linearGradient id="mid-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0D0D2E" />
+            <stop offset="100%" stopColor="#080818" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#mid-grad)"
+          d="M0,320 L0,260 L50,260 L50,220 L75,220 L75,185 L100,185 L100,155 L120,155 L120,130 L145,130
+             L145,105 L165,105 L165,85 L185,85 L185,105 L215,105 L215,135 L255,135 L255,105 L280,105
+             L280,75 L305,75 L305,50 L330,50 L330,30 L355,30 L355,50 L380,50 L380,85 L415,85 L415,120
+             L455,120 L455,85 L480,85 L480,55 L505,55 L505,30 L530,30 L530,10 L555,10 L555,30 L580,30
+             L580,65 L615,65 L615,100 L655,100 L655,65 L680,65 L680,35 L705,35 L705,15 L725,15 L725,35
+             L752,35 L752,70 L790,70 L790,108 L830,108 L830,70 L858,70 L858,42 L883,42 L883,22 L903,22
+             L903,42 L928,42 L928,80 L965,80 L965,42 L993,42 L993,18 L1015,18 L1015,0 L1038,0 L1038,18
+             L1060,18 L1060,55 L1095,55 L1095,25 L1120,25 L1120,45 L1150,45 L1150,80 L1185,80 L1185,115
+             L1225,115 L1225,85 L1252,85 L1252,105 L1285,105 L1285,140 L1325,140 L1325,175 L1365,175
+             L1365,210 L1440,210 L1440,320 Z"
+        />
+        {/* Window lights */}
+        {[
+          [330,38],[345,38],[360,38],[330,22],[345,22],
+          [530,17],[542,17],[530,3],
+          [705,22],[715,22],[705,8],
+          [883,28],[895,28],
+          [1015,6],[1025,6],
+          [1120,32],[1132,32],
+        ].map(([x, y], i) => (
+          <rect key={i} x={x} y={y} width={5} height={7} fill="#FFE600" opacity={0.45} />
+        ))}
+        {[
+          [165,90],[175,90],[165,104],
+          [280,80],[292,80],
+          [655,70],[667,70],
+          [965,48],[977,48],
+          [1225,92],[1237,92],
+        ].map(([x, y], i) => (
+          <rect key={`c${i}`} x={x} y={y} width={5} height={7} fill="#00D4FF" opacity={0.35} />
+        ))}
+      </motion.svg>
+
+      {/* Near layer — foreground, darkest, largest */}
+      <motion.svg
+        viewBox="0 0 1440 340"
+        preserveAspectRatio="xMidYMax meet"
+        style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%', opacity: 0.48 }}
+        animate={{ y: [0, -11, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <path
+          fill="#060612"
+          d="M0,340 L0,255 L55,255 L55,210 L85,210 L85,170 L115,170 L115,125 L138,125 L138,90 L162,90
+             L162,60 L188,60 L188,40 L208,40 L208,28 L228,28 L228,40 L248,40 L248,70 L285,70 L285,110
+             L325,110 L325,70 L355,70 L355,35 L380,35 L380,12 L408,12 L408,0 L428,0 L428,12 L450,12
+             L450,50 L488,50 L488,90 L525,90 L525,50 L555,50 L555,18 L580,18 L580,0 L602,0 L602,18
+             L628,18 L628,55 L665,55 L665,95 L705,95 L705,55 L732,55 L732,25 L758,25 L758,8 L778,8
+             L778,25 L802,25 L802,65 L840,65 L840,105 L878,105 L878,65 L908,65 L908,32 L935,32 L935,12
+             L958,12 L958,0 L980,0 L980,18 L1005,18 L1005,58 L1042,58 L1042,22 L1068,22 L1068,0 L1090,0
+             L1090,22 L1115,22 L1115,62 L1152,62 L1152,98 L1192,98 L1192,138 L1235,138 L1235,105 L1262,105
+             L1262,128 L1300,128 L1300,168 L1342,168 L1342,205 L1385,205 L1385,238 L1440,238 L1440,340 Z"
+        />
+        {/* Water towers */}
+        <ellipse cx="628" cy="52" rx="14" ry="9" fill="#0A0A1E" stroke="#1A1A3E" strokeWidth="1.5" />
+        <rect x="621" y="52" width="14" height="18" fill="#0A0A1E" />
+        <ellipse cx="980" cy="16" rx="16" ry="10" fill="#0A0A1E" stroke="#1A1A3E" strokeWidth="1.5" />
+        <rect x="972" y="16" width="16" height="20" fill="#0A0A1E" />
+        {/* Antenna masts */}
+        <line x1="408" y1="0" x2="408" y2="-18" stroke="#1A1A3E" strokeWidth="2" />
+        <line x1="408" y1="-18" x2="412" y2="-28" stroke="#1A1A3E" strokeWidth="1.5" />
+        <line x1="1090" y1="0" x2="1090" y2="-15" stroke="#1A1A3E" strokeWidth="2" />
+        {/* Window lights - cyan */}
+        {[
+          [162,65],[172,65],[162,80],[172,80],
+          [188,45],[198,45],
+          [408,15],[418,15],
+          [580,5],[592,5],
+          [758,12],[768,12],
+          [958,5],[970,5],
+          [1068,5],[1078,5],
+        ].map(([x, y], i) => (
+          <rect key={`cn${i}`} x={x} y={y} width={6} height={8} fill="#00D4FF" opacity={0.5} />
+        ))}
+        {/* Window lights - warm yellow */}
+        {[
+          [208,32],[218,32],[228,44],
+          [450,18],[462,18],
+          [732,30],[742,30],
+          [935,18],[947,18],
+          [1115,28],[1127,28],
+          [1235,110],[1247,110],
+        ].map(([x, y], i) => (
+          <rect key={`yn${i}`} x={x} y={y} width={6} height={8} fill="#FFE600" opacity={0.45} />
+        ))}
+        {/* Red accent lights */}
+        {[
+          [162,95],[355,40],[602,5],[1090,5],
+        ].map(([x, y], i) => (
+          <circle key={`r${i}`} cx={x} cy={y} r={2} fill="#FF2D55" opacity={0.7} />
+        ))}
+      </motion.svg>
     </div>
   )
 }
@@ -249,7 +400,10 @@ const fadeScale = (delay) => ({ initial: { opacity: 0, y: 30, scale: 0.95 }, ani
 
 export default function Hero() {
   return (
-    <section style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden' }}>
+    <section style={{ position: 'relative', width: '100%', minHeight: '100vh', overflow: 'visible' }}>
+
+      {/* Clipping container for decorative background layers */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
 
       {/* LAYER 1 — Background */}
       <div style={{
@@ -278,21 +432,43 @@ export default function Hero() {
         <Particles />
       </div>
 
+      {/* City Skyline */}
+      <CityScape />
+
+      {/* LAYER 5 — Glitch overlay */}
+      <div
+        className="glitch-overlay"
+        style={{
+          position: 'absolute', inset: 0,
+          opacity: 0.03,
+          mixBlendMode: 'overlay',
+          pointerEvents: 'none',
+          zIndex: 20,
+        }}
+      />
+
+      </div>{/* end clipping container */}
+
       {/* LAYER 4 — Main content */}
       <div style={{
         position: 'relative',
         zIndex: 10,
-        height: '100%',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: '12vh',
+        paddingTop: '10vh',
+        paddingBottom: '4rem',
         textAlign: 'center',
       }}>
 
-        {/* a) CIPHER PRESENTS caption */}
+        {/* a) CIPHER × IEEE PRESENTS caption */}
         <motion.div {...fadeUp(0.2)}>
-          <span style={{
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.8rem',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.75rem',
             fontWeight: 700,
@@ -301,11 +477,18 @@ export default function Hero() {
             border: '2px solid #FFE600',
             background: '#FFE600',
             color: '#0A0A0A',
-            padding: '0.2rem 0.8rem',
-            display: 'inline-block',
+            padding: '0.3rem 1rem',
           }}>
-            CIPHER PRESENTS
-          </span>
+            <span>CIPHER</span>
+            <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>×</span>
+            {/* IEEE Logo */}
+            <img 
+              src={ieeeLogo}
+              alt="IEEE" 
+              style={{ height: '20px', filter: 'brightness(0)', objectFit: 'contain' }}
+            />
+            <span style={{ margin: '0 0.2rem' }}>PRESENTS</span>
+          </div>
         </motion.div>
 
         {/* b) VELORA */}
@@ -397,18 +580,6 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <ScrollIndicator />
-
-      {/* LAYER 5 — Glitch overlay */}
-      <div
-        className="glitch-overlay"
-        style={{
-          position: 'absolute', inset: 0,
-          opacity: 0.03,
-          mixBlendMode: 'overlay',
-          pointerEvents: 'none',
-          zIndex: 20,
-        }}
-      />
 
       {/* Hero-specific styles */}
       <style>{`

@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tracks } from '../data/tracks'
+import newYorkClassicSvg from '../assets/landscape/spiderverse_new_york_classic.svg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -298,8 +299,34 @@ export default function Tracks() {
         background: '#0D0D0D',
         backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.01) 10px, rgba(255,255,255,0.01) 11px)',
         padding: 'clamp(5rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {/* NYC Classic landscape background */}
+      <img
+        src={newYorkClassicSvg}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: 'auto',
+          minHeight: '55%',
+          objectFit: 'cover',
+          objectPosition: 'bottom center',
+          opacity: 0.09,
+          mixBlendMode: 'screen',
+          pointerEvents: 'none',
+          zIndex: 0,
+          userSelect: 'none',
+        }}
+      />
+
+      {/* Content — sits above landscape bg */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+
       {/* Section label */}
       <div ref={labelRef} style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
         <div style={{
@@ -353,6 +380,8 @@ export default function Tracks() {
           <UniverseCard key={track.id} track={track} index={i} />
         ))}
       </div>
+
+      </div>{/* end content wrapper */}
 
       <style>{`
         @media (max-width: 1023px) {

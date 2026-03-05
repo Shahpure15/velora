@@ -22,7 +22,7 @@ const PANELS = [
     accent:  '#00D4FF',
     icon:    { text: '{ }', size: '3.5rem', color: '#00D4FF', shadow: 'none' },
     heading: 'WHO IS CIPHER?',
-    body:    'Cipher is the IT Students Executive Council of MIT Academy of Engineering, Alandi. We are the ones who build the stage — and Velora is our first act.',
+    body:    'Cipher is the IT Students Executive Council of MIT Academy of Engineering, Alandi. In association with IEEE, we build platforms that push boundaries — and Velora is our launchpad.',
     action:  { word: 'ZAP!', bg: '#00D4FF', color: '#0A0A0A', rotate: '6deg' },
   },
   {
@@ -262,11 +262,12 @@ export default function About() {
         {/* Caption strip */}
         <div
           ref={stripRef}
+          className="about-caption-strip"
           style={{
             marginTop: '3rem',
             background: '#FFE600',
             color: '#0A0A0A',
-            padding: '1rem 2rem',
+            padding: '0.8rem 1rem',
             borderTop: '3px solid #000',
             borderBottom: '3px solid #000',
             fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -274,15 +275,18 @@ export default function About() {
             fontWeight: 600,
             textAlign: 'center',
             letterSpacing: '0.02em',
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '0.2rem 0',
           }}
         >
-          Open to all college students
-          <span style={{ color: '#FF2D55', fontSize: '1.1rem', margin: '0 0.6rem' }}>·</span>
-          Teams of 2–5
-          <span style={{ color: '#FF2D55', fontSize: '1.1rem', margin: '0 0.6rem' }}>·</span>
-          Free to participate
-          <span style={{ color: '#FF2D55', fontSize: '1.1rem', margin: '0 0.6rem' }}>·</span>
-          MITAOE, Alandi
+          <span className="caption-item">Open to all college students</span>
+          <span className="caption-dot" style={{ color: '#FF2D55', fontSize: '1.1rem', margin: '0 0.5rem' }}>·</span>
+          <span className="caption-item">Teams of 2–5</span>
+          <span className="caption-dot" style={{ color: '#FF2D55', fontSize: '1.1rem', margin: '0 0.5rem' }}>·</span>
+          <span className="caption-item">MITAOE, Alandi</span>
         </div>
       </div>
 
@@ -298,6 +302,20 @@ export default function About() {
           }
           .about-panels-container > div > div[style*="width: 1px"] {
             display: none !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .about-caption-strip {
+            flex-direction: column !important;
+            gap: 0.15rem !important;
+            padding: 0.6rem 1rem !important;
+            font-size: 0.8rem !important;
+          }
+          .about-caption-strip .caption-dot {
+            display: none;
+          }
+          .about-caption-strip .caption-item {
+            display: block;
           }
         }
       `}</style>

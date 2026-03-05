@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { faqs } from '../data/faqs'
+import mumbaiSvg from '../assets/landscape/spiderverse_mumbai.svg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -205,6 +206,27 @@ export default function FAQ() {
         padding: 'clamp(5rem, 8vw, 10rem) clamp(1.5rem, 4vw, 4rem)',
       }}
     >
+      {/* Spider-Verse Mumbai landscape background */}
+      <img
+        src={mumbaiSvg}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: 'auto',
+          minHeight: '55%',
+          objectFit: 'cover',
+          objectPosition: 'bottom center',
+          opacity: 0.10,
+          mixBlendMode: 'screen',
+          pointerEvents: 'none',
+          zIndex: 0,
+          userSelect: 'none',
+        }}
+      />
+
       {/* Halftone overlay */}
       <div style={{
         position: 'absolute', inset: 0,
@@ -231,7 +253,7 @@ export default function FAQ() {
             paddingBottom: '0.2rem',
             marginBottom: '0.4rem',
           }}>
-            ISSUE #07
+            ISSUE #06
           </div>
           <div style={{
             fontFamily: "'Bangers', cursive",

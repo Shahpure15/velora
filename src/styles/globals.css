@@ -77,6 +77,21 @@ body {
 }
 
 /* ------------------------------------------------------------
+   Hero Countdown responsive
+   ------------------------------------------------------------ */
+.hero-countdown > div {
+  min-width: 80px;
+}
+
+@media (max-width: 440px) {
+  .hero-countdown {
+    gap: 0.25rem;
+    transform: scale(0.82);
+    transform-origin: center top;
+  }
+}
+
+/* ------------------------------------------------------------
    Halftone Dot Overlay
    ------------------------------------------------------------ */
 .halftone-overlay {

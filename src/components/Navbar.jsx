@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { playBackgroundMusic } from '../utils/audioManager'
 
 const NAV_LINKS = [
   { label: 'About',    id: 'about' },
   { label: 'Tracks',   id: 'tracks' },
-  { label: 'Timeline', id: 'timeline' },
   { label: 'Prizes',   id: 'prizes' },
   { label: 'Judges',   id: 'judges' },
   { label: 'Sponsors', id: 'sponsors' },
@@ -12,6 +12,74 @@ const NAV_LINKS = [
 ]
 
 const GLITCH_CHARS = '!@#$%^&*<>?/|\\~'
+
+// Mobile menu glitch-on-mount link
+function MobileGlitchLink({ label, idx, onClick }) {
+  const [display, setDisplay] = useState(label)
+  const intervalRef = useRef(null)
+  const timeoutRef  = useRef(null)
+
+  useEffect(() => {
+    // Stagger each link so they resolve one after another
+    const startDelay = idx * 90
+    timeoutRef.current = setTimeout(() => {
+      let elapsed = 0
+      intervalRef.current = setInterval(() => {
+        elapsed += 40
+        if (elapsed >= 180) {
+          clearInterval(intervalRef.current)
+          let i = 0
+          function resolveNext() {
+            setDisplay(
+              label.slice(0, i + 1) +
+              Array.from(label.slice(i + 1)).map(() =>
+                GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
+              ).join('')
+            )
+            i++
+            if (i < label.length) timeoutRef.current = setTimeout(resolveNext, 35)
+            else setDisplay(label)
+          }
+          resolveNext()
+        } else {
+          setDisplay(
+            Array.from(label).map(() =>
+              GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
+            ).join('')
+          )
+        }
+      }, 40)
+    }, startDelay)
+    return () => { clearInterval(intervalRef.current); clearTimeout(timeoutRef.current) }
+  }, [label, idx])
+
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        background: 'none',
+        border: 'none',
+        borderBottom: '1px solid #1E1E1E',
+        fontFamily: "'Bangers', cursive",
+        fontSize: '2rem',
+        letterSpacing: '0.08em',
+        color: '#F5F5F5',
+        cursor: 'pointer',
+        padding: '0.8rem 0',
+        textAlign: 'left',
+        width: '100%',
+        transition: 'color 0.15s',
+        display: 'block',
+      }}
+      onTouchStart={e => (e.currentTarget.style.color = '#FFE600')}
+      onTouchEnd={e => (e.currentTarget.style.color = '#F5F5F5')}
+      onMouseEnter={e => (e.currentTarget.style.color = '#FFE600')}
+      onMouseLeave={e => (e.currentTarget.style.color = '#F5F5F5')}
+    >
+      {display}
+    </button>
+  )
+}
 
 // Effect 2 — Typewriter glitch hook
 function useGlitchText(original) {
@@ -143,9 +211,13 @@ export default function Navbar() {
     setTimeout(() => scrollTo(id), 150)
   }
 
-  // Effect 3 — wordmark glitch trigger + Egg 3 click streak
+  // Effect 3 — wordmark glitch trigger + Egg 3 click streak + bg music
   function handleWordmarkClick() {
     scrollTo('top')
+    
+    // Play background music when logo is clicked
+    playBackgroundMusic()
+
     // Glitch burst
     if (!isGlitching) {
       setIsGlitching(true)
@@ -292,70 +364,122 @@ export default function Navbar() {
         </button>
       </motion.nav>
 
-      {/* Mobile fullscreen overlay */}
+      {/* Mobile menu — half-screen right panel */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 999,
-              background: 'rgba(10,10,10,0.98)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '2.5rem',
-            }}
-          >
-            {NAV_LINKS.map(({ label, id }) => (
-              <button
-                key={id}
-                onClick={() => handleNavClick(id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontFamily: "'Bangers', cursive",
-                  fontSize: '3rem',
-                  letterSpacing: '0.08em',
-                  color: '#F5F5F5',
-                  cursor: 'pointer',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#FFE600')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#F5F5F5')}
-              >
-                {label}
-              </button>
-            ))}
-            <button
-              onClick={() => {
-                setMenuOpen(false)
-                window.lenis?.scrollTo('#register', { duration: 1.5 })
-              }}
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="mobile-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setMenuOpen(false)}
               style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: 700,
-                fontSize: '1rem',
-                background: '#FFE600',
-                color: '#0A0A0A',
-                border: '2px solid #000',
-                boxShadow: '3px 3px 0 #000',
-                padding: '0.75rem 2rem',
-                letterSpacing: '0.05em',
-                marginTop: '1rem',
-                cursor: 'pointer',
-                borderRadius: 0,
+                position: 'fixed',
+                inset: 0,
+                zIndex: 998,
+                background: 'rgba(0,0,0,0.55)',
+                backdropFilter: 'blur(2px)',
+              }}
+            />
+
+            {/* Panel */}
+            <motion.div
+              key="mobile-menu"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{
+                position: 'fixed',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                width: 'min(55vw, 300px)',
+                zIndex: 999,
+                background: '#0A0A0A',
+                borderLeft: '3px solid #FF2D55',
+                boxShadow: '-8px 0 32px rgba(255,45,85,0.25)',
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '5rem 1.5rem 2rem',
+                overflowY: 'auto',
               }}
             >
-              Register Now
-            </button>
-          </motion.div>
+              {/* Panel label */}
+              <span style={{
+                position: 'absolute',
+                top: '1rem',
+                left: '1.2rem',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: '0.55rem',
+                color: '#333',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}>
+                NAV / 01
+              </span>
+
+              {/* Close X */}
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  background: 'none',
+                  border: 'none',
+                  color: '#F5F5F5',
+                  fontSize: '1.4rem',
+                  cursor: 'pointer',
+                  lineHeight: 1,
+                  padding: '0.25rem',
+                }}
+              >
+                ✕
+              </button>
+
+              {/* Nav links with glitch */}
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                {NAV_LINKS.map(({ label, id }, idx) => (
+                  <MobileGlitchLink
+                    key={id}
+                    label={label}
+                    idx={idx}
+                    onClick={() => handleNavClick(id)}
+                  />
+                ))}
+              </div>
+
+              {/* Register CTA */}
+              <button
+                onClick={() => {
+                  setMenuOpen(false)
+                  window.lenis?.scrollTo('#register', { duration: 1.5 })
+                }}
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                  background: '#FFE600',
+                  color: '#0A0A0A',
+                  border: '2px solid #000',
+                  boxShadow: '3px 3px 0 #000',
+                  padding: '0.75rem 1rem',
+                  letterSpacing: '0.05em',
+                  marginTop: '1.5rem',
+                  cursor: 'pointer',
+                  borderRadius: 0,
+                  width: '100%',
+                }}
+              >
+                Register Now
+              </button>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

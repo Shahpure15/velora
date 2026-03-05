@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { playBackgroundMusic, stopBackgroundMusic, subscribeToAudioState } from '../utils/audioManager'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -374,6 +375,100 @@ function NoirIndicator() {
   )
 }
 
+// ─── Audio Floating Controls ──────────────────────────────────────────────────
+
+function AudioControls() {
+  const [isAudioOn, setIsAudioOn] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+
+  useEffect(() => {
+    const unsub = subscribeToAudioState((state) => {
+      setIsAudioOn(state)
+    })
+    return unsub
+  }, [])
+
+  function handleMute() {
+    stopBackgroundMusic()
+    setShowToast(true)
+    setTimeout(() => {
+      setShowToast(false)
+    }, 4500)
+  }
+
+  return (
+    <>
+      <AnimatePresence>
+        {isAudioOn && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, x: -20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: -20 }}
+            onClick={handleMute}
+            style={{
+              position: 'fixed',
+              top: '16px',
+              left: '10rem',
+              zIndex: 9999,
+              background: '#FF2D55',
+              border: '2px solid #000',
+              boxShadow: '3px 3px 0 #000',
+              color: '#FFF',
+              fontFamily: "'Bangers', cursive",
+              fontSize: '1.2rem',
+              padding: '0.4rem 1rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+            whileHover={{ y: -2, boxShadow: '5px 5px 0 #000' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            MUTE SOUND
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showToast && !isAudioOn && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              position: 'fixed',
+              top: '1rem',
+              left: '50%',
+              x: '-50%',
+              zIndex: 9999,
+              background: '#FFE600',
+              border: '3px solid #000',
+              boxShadow: '4px 4px 0 #000',
+              color: '#0A0A0A',
+              padding: '0.8rem 1.5rem',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              textAlign: 'center',
+            }}
+          >
+            Audio Muted. <br/>
+            <span style={{ fontWeight: 400, fontSize: '0.75rem', color: '#333' }}>
+              Press <b>N</b> (Noir Mode) or click the <b>VELORA logo</b> to blast it again!
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
 // ─── EasterEggs ───────────────────────────────────────────────────────────────
 
 export default function EasterEggs() {
@@ -399,6 +494,7 @@ export default function EasterEggs() {
       // Egg 4 — Noir Mode (N key, not in inputs)
       const tag = document.activeElement?.tagName
       if ((e.key === 'n' || e.key === 'N') && tag !== 'INPUT' && tag !== 'TEXTAREA') {
+        playBackgroundMusic()
         setNoirActive(prev => {
           const next = !prev
           if (next) {
@@ -468,6 +564,9 @@ export default function EasterEggs() {
 
       {/* Egg 4 — Noir indicator */}
       {noirActive && <NoirIndicator key="noir" />}
+
+      {/* Audio Mute Controls */}
+      <AudioControls key="audio-controls" />
     </AnimatePresence>
   )
 }

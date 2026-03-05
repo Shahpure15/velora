@@ -99,26 +99,6 @@ export default function Footer() {
         V
       </div>
 
-      {/* Comic panel caption — EPILOGUE */}
-      <div style={{
-        position: 'absolute',
-        top: '-0.7rem',
-        left: '2rem',
-        background: '#050505',
-        padding: '0 0.8rem',
-        border: '1px solid #1A1A1A',
-      }}>
-        <span style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontSize: '0.6rem',
-          letterSpacing: '0.3em',
-          color: '#333',
-          textTransform: 'uppercase',
-        }}>
-          EPILOGUE
-        </span>
-      </div>
-
       {/* Top row */}
       <div
         className="footer-top-row"
@@ -164,7 +144,7 @@ export default function Footer() {
             color: '#555',
             marginTop: '0.5rem',
           }}>
-            An annual hackathon by Cipher
+            An annual hackathon by Cipher × IEEE
           </div>
           <div style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -250,7 +230,7 @@ export default function Footer() {
           fontSize: '0.75rem',
           color: '#333',
         }}>
-          © 2026 Cipher — MIT Academy of Engineering
+          © 2026 Cipher × IEEE — MIT Academy of Engineering
         </div>
 
         <div style={{

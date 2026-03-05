@@ -15,6 +15,8 @@ function getTimeLeft() {
   return {
     days: Math.floor(diff / 86400000),
     hrs:  Math.floor((diff % 86400000) / 3600000),
+    mins: Math.floor((diff % 3600000)  / 60000),
+    secs: Math.floor((diff % 60000)    / 1000),
   }
 }
 
@@ -72,6 +74,17 @@ function MiniFlip({ value, label }) {
   )
 }
 
+const miniSep = (
+  <span style={{
+    fontFamily: "'Bangers', cursive",
+    fontSize: '1.4rem',
+    color: '#FF2D55',
+    lineHeight: 1,
+    marginTop: '0.3rem',
+    alignSelf: 'flex-start',
+  }}>:</span>
+)
+
 function MiniCountdown() {
   const [time, setTime] = useState(getTimeLeft)
   useEffect(() => {
@@ -80,58 +93,36 @@ function MiniCountdown() {
   }, [])
 
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem', justifyContent: 'center', flexWrap: 'wrap' }}>
       <MiniFlip value={time.days} label="Days" />
-      <span style={{
-        fontFamily: "'Bangers', cursive",
-        fontSize: '1.4rem',
-        color: '#FF2D55',
-        lineHeight: 1,
-        marginTop: '0.3rem',
-      }}>:</span>
-      <MiniFlip value={time.hrs} label="Hrs" />
+      {miniSep}
+      <MiniFlip value={time.hrs}  label="Hrs"  />
+      {miniSep}
+      <MiniFlip value={time.mins} label="Mins" />
+      {miniSep}
+      <MiniFlip value={time.secs} label="Secs" />
     </div>
   )
 }
 
-// ─── SVG Web Lines (top-right) ────────────────────────────────────────────────
+// ─── Subtext ────────────────────────────────────────────────────────────────────────
 
-function WebLines() {
-  const lines = [
-    { x2: '60%',  y2: '100%', delay: 0 },
-    { x2: '20%',  y2: '100%', delay: 0.15 },
-    { x2: '0%',   y2: '80%',  delay: 0.3 },
-    { x2: '0%',   y2: '40%',  delay: 0.45 },
-    { x2: '40%',  y2: '100%', delay: 0.6 },
-    { x2: '100%', y2: '60%',  delay: 0.75 },
-  ]
+function Subtext() {
   return (
-    <svg
-      style={{
-        position: 'absolute', top: 0, right: 0,
-        width: '55%', height: '55%',
-        pointerEvents: 'none', zIndex: 1,
-        overflow: 'visible',
-      }}
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-    >
-      {lines.map((l, i) => (
-        <motion.line
-          key={i}
-          x1="100%" y1="0%"
-          x2={l.x2} y2={l.y2}
-          stroke="#00D4FF"
-          strokeWidth="0.5"
-          opacity="0.25"
-          strokeDasharray="1"
-          strokeDashoffset="1"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.2, delay: l.delay, ease: 'easeOut' }}
-        />
-      ))}
-    </svg>
+    <p style={{
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      fontSize: '0.95rem',
+      color: '#888',
+      lineHeight: 2,
+      marginTop: '1.5rem',
+    }}>
+      <span style={{ display: 'block' }}>
+        Open to all college students<span style={{ color: '#FF2D55' }}> · </span>Teams of 2–5
+      </span>
+      <span style={{ display: 'block' }}>
+        MITAOE, Alandi
+      </span>
+    </p>
   )
 }
 
@@ -181,33 +172,6 @@ function Particles() {
   )
 }
 
-// ─── Subtext with colored separators ─────────────────────────────────────────
-
-function Subtext() {
-  const parts = 'Open to all college students · Teams of 2 to 5 · Free to participate · 24 hours to change everything.'.split(' · ')
-  return (
-    <p style={{
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
-      fontSize: '1rem',
-      color: '#888',
-      lineHeight: 1.8,
-      marginTop: '1.5rem',
-      maxWidth: '500px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    }}>
-      {parts.map((part, i) => (
-        <span key={i}>
-          {part}
-          {i < parts.length - 1 && (
-            <span style={{ color: '#FF2D55' }}> · </span>
-          )}
-        </span>
-      ))}
-    </p>
-  )
-}
-
 // ─── Register ─────────────────────────────────────────────────────────────────
 
 const PILLS = [
@@ -217,20 +181,38 @@ const PILLS = [
 ]
 
 export default function Register() {
-  const sectionRef  = useRef(null)
+  const sectionRef    = useRef(null)
+  const contentRef    = useRef(null)
   const leftPanelRef  = useRef(null)
   const rightPanelRef = useRef(null)
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
+      // Side panels slide in
       gsap.from(leftPanelRef.current, {
         x: -80, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' },
       })
       gsap.from(rightPanelRef.current, {
         x: 80, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' },
       })
+
+      // Main content — single reliable GSAP fade-in
+      const items = contentRef.current?.querySelectorAll('.reg-anim')
+      if (items?.length) {
+        gsap.set(items, { opacity: 0, y: 30 })
+        gsap.to(items, {
+          opacity: 1, y: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+          },
+        })
+      }
     }, sectionRef)
     return () => ctx.revert()
   }, [])
@@ -248,7 +230,7 @@ export default function Register() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '8rem 2rem',
+        padding: '6rem 1.5rem',
       }}
     >
       {/* Layer 1 — Radial gradient */}
@@ -267,13 +249,10 @@ export default function Register() {
         pointerEvents: 'none', zIndex: 1,
       }} />
 
-      {/* Layer 3 — SVG web lines (top-right) */}
-      <WebLines />
-
-      {/* Layer 4 — Floating particles */}
+      {/* Layer 3 — Floating particles */}
       <Particles />
 
-      {/* Layer 5 — Watermark */}
+      {/* Layer 4 — Watermark */}
       <div style={{
         position: 'absolute',
         bottom: '-2rem',
@@ -325,80 +304,64 @@ export default function Register() {
         }}
       />
 
-      {/* Main content */}
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        textAlign: 'center',
-        maxWidth: '700px',
-        width: '100%',
-      }}>
+      {/* Main content — all children use .reg-anim for GSAP stagger */}
+      <div
+        ref={contentRef}
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          textAlign: 'center',
+          maxWidth: '700px',
+          width: '100%',
+        }}
+      >
 
         {/* a) Caption box */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          style={{
-            display: 'inline-block',
-            background: '#00D4FF',
-            color: '#0A0A0A',
-            border: '2px solid #00D4FF',
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.25em',
-            textTransform: 'uppercase',
-            padding: '0.3rem 1rem',
-            marginBottom: '1.5rem',
-          }}
-        >
+        <div className="reg-anim" style={{
+          display: 'inline-block',
+          background: '#00D4FF',
+          color: '#0A0A0A',
+          border: '2px solid #00D4FF',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontSize: '0.7rem',
+          fontWeight: 700,
+          letterSpacing: '0.25em',
+          textTransform: 'uppercase',
+          padding: '0.3rem 1rem',
+          marginBottom: '1.5rem',
+        }}>
           FINAL TRANSMISSION
-        </motion.div>
+        </div>
 
         {/* b) Heading */}
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            style={{
-              fontFamily: "'Bangers', cursive",
-              fontSize: 'clamp(3.5rem, 8vw, 6rem)',
-              color: '#F5F5F5',
-              display: 'block',
-              lineHeight: 1,
-            }}
-          >
+        <div className="reg-anim">
+          <span style={{
+            fontFamily: "'Bangers', cursive",
+            fontSize: 'clamp(3.5rem, 8vw, 6rem)',
+            color: '#F5F5F5',
+            display: 'block',
+            lineHeight: 1,
+          }}>
             Your Universe
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            style={{
-              fontFamily: "'Bangers', cursive",
-              fontSize: 'clamp(3.5rem, 8vw, 6rem)',
-              color: '#FF2D55',
-              display: 'block',
-              lineHeight: 1,
-            }}
-          >
+          </span>
+          <span style={{
+            fontFamily: "'Bangers', cursive",
+            fontSize: 'clamp(3.5rem, 8vw, 6rem)',
+            color: '#FF2D55',
+            display: 'block',
+            lineHeight: 1,
+          }}>
             Needs You.
-          </motion.span>
+          </span>
         </div>
 
         {/* c) Subtext */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-        >
+        <div className="reg-anim">
           <Subtext />
-        </motion.div>
+        </div>
 
         {/* d) Info pills */}
-        <div style={{
+        <div className="reg-anim" style={{
           display: 'flex',
           gap: '0.8rem',
           justifyContent: 'center',
@@ -406,11 +369,8 @@ export default function Register() {
           marginTop: '2rem',
         }}>
           {PILLS.map((pill, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.8 + i * 0.1 }}
               style={{
                 border: '1px solid #333',
                 background: '#111',
@@ -425,24 +385,23 @@ export default function Register() {
             >
               <span>{pill.icon}</span>
               <span>{pill.text}</span>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* e) CTA button */}
-        <div style={{ marginTop: '2.5rem' }}>
+        <div className="reg-anim" style={{ marginTop: '2.5rem' }}>
           <motion.a
             href="#"
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.preventDefault()}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
             whileHover={{ y: -3, boxShadow: '9px 9px 0 #000', backgroundColor: '#FFF000' }}
             whileTap={{ scale: 0.97 }}
             style={{
-              display: 'inline-block',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               background: '#FFE600',
               color: '#0A0A0A',
               fontFamily: "'Bangers', cursive",
@@ -454,38 +413,29 @@ export default function Register() {
               borderRadius: 0,
               textDecoration: 'none',
               cursor: 'pointer',
+              lineHeight: 1,
             }}
           >
             REGISTER ON UNSTOP →
           </motion.a>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 1.1 }}
-            style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: '0.75rem',
-              color: '#555',
-              marginTop: '0.8rem',
-            }}
-          >
-            Free to register · No experience required
-          </motion.p>
+          <p style={{
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSize: '0.75rem',
+            color: '#555',
+            marginTop: '0.8rem',
+          }}>
+            No experience required · Just bring your A-game
+          </p>
         </div>
 
         {/* f) Countdown reminder */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-          style={{
-            marginTop: '2.5rem',
-            border: '2px solid #333',
-            background: '#111',
-            padding: '1rem 2rem',
-            display: 'inline-block',
-          }}
-        >
+        <div className="reg-anim" style={{
+          marginTop: '2.5rem',
+          border: '2px solid #333',
+          background: '#111',
+          padding: '1rem 2rem',
+          display: 'inline-block',
+        }}>
           <span style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.65rem',
@@ -498,7 +448,7 @@ export default function Register() {
             REGISTRATIONS CLOSING IN
           </span>
           <MiniCountdown />
-        </motion.div>
+        </div>
 
       </div>
     </section>
