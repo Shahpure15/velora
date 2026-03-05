@@ -1,7 +1,7 @@
 # VELORA 1.0 — Dare to Compete
 
 > **A 24-hour hackathon by Cipher, the coding club of MIT Academy of Engineering, Alandi.**
-> Open to all college students. Free to participate. Built to wreck your comfort zone.
+> Open to all college students. Built to wreck your comfort zone.
 
 ---
 

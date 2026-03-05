@@ -11,8 +11,8 @@ export const faqs = [
   },
   {
     id: 3,
-    question: 'Is registration free?',
-    answer: 'Yes, registration is completely free.',
+    question: 'Is there a registration fee?',
+    answer: 'Yes, there is a nominal registration fee. Check the Unstop page for details.',
   },
   {
     id: 4,

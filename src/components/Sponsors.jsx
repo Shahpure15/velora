@@ -536,7 +536,7 @@ export default function Sponsors() {
 
             {/* Reach Out */}
             <motion.a
-              href="mailto:cipher@mitaoe.ac.in?subject=Velora%201.0%20Sponsorship%20Inquiry"
+              href="mailto:cipherit.mitaoe@gmail.com?subject=Velora%201.0%20Sponsorship%20Inquiry"
               whileHover={{ y: -3, boxShadow: '7px 7px 0 #FF2D5533' }}
               whileTap={{ scale: 0.97 }}
               style={{
@@ -575,7 +575,7 @@ export default function Sponsors() {
             marginTop: '1.2rem',
             letterSpacing: '0.05em',
           }}>
-            cipher@mitaoe.ac.in · We'd love to have you on board.
+            cipherit.mitaoe@gmail.com · We'd love to have you on board.
           </p>
         </div>
 
