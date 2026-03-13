@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velora 1.0 | Internal Brand & Operations Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Velora Spider-Verse (Dark Cosmic Base with Red/Yellow/Cyan Accents) -->
+    <!-- Application Structure Plan: A centralized, scrollable dashboard designed specifically for internal organizing teams (excluding PR/Sponsorship to prevent leaks). The structure prioritizes quick access to foundational event info, strict brand design rules (colors/typography/components) for the design/dev teams, followed by operational logistics (rules, structure, timelines) for the management teams. Interactive elements like click-to-copy colors and dynamic tabs make it a highly functional utility rather than a static document. -->
+    <!-- Visualization & Content Choices: The funnel data from the brochure is visualized using a Chart.js Bar Chart to clearly show the drop-off from Online Registrations to Offline Finalists. Tabular operational data is organized into interactive accordions and a vertical master timeline. No SVGs or Mermaid diagrams are used; all UI elements rely on strict CSS geometry, hard shadows, and typography to emulate the comic book aesthetic. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        :root {
+            --color-bg: #0A0A0F;
+            --color-surface: #13131A;
+            --color-component: #111111;
+            --color-border: #000000;
+            --color-text: #F0F0F0;
+            --color-muted: #888888;
+            --color-yellow: #FFE600;
+            --color-cyan: #00D4FF;
+            --color-red: #FF2D55;
+            --font-display: 'Bangers', cursive;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: var(--font-display);
+            letter-spacing: 0.05em;
+        }
+
+        .bg-halftone {
+            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .bg-stripes {
+            background-image: repeating-linear-gradient(45deg, #141414, #141414 10px, #111111 10px, #111111 20px);
+        }
+
+        .text-chromatic {
+            text-shadow:
+                -2px 0 0 rgba(255,0,60,0.8),
+                 2px 0 0 rgba(0,245,255,0.8),
+                 0 2px 0 rgba(120,0,255,0.5);
+        }
+
+        .text-chromatic-intense {
+            text-shadow:
+                -4px 0 0 rgba(255,0,60,0.85),
+                 4px 0 0 rgba(0,245,255,0.85),
+                 0 3px 0 rgba(120,0,255,0.6),
+                -8px 0 0 rgba(255,0,60,0.25),
+                 8px 0 0 rgba(0,245,255,0.25);
+        }
+
+        .comic-panel {
+            background-color: var(--color-surface);
+            border: 3px solid var(--color-border);
+            border-radius: 0;
+            box-shadow: 4px 4px 0 var(--color-border);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .comic-panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 8px 8px 0 var(--color-border);
+        }
+
+        .comic-button {
+            background-color: var(--color-yellow);
+            color: #000;
+            border: 3px solid var(--color-border);
+            box-shadow: 4px 4px 0 var(--color-border);
+            border-radius: 0;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            transition: all 0.1s ease-in-out;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.2rem;
+            letter-spacing: 0.08em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comic-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--color-border);
+        }
+
+        .comic-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--color-border);
+        }
+
+        .starburst {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background-color: var(--color-cyan);
+            color: #000;
+            font-family: var(--font-display);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--color-cyan);
+            color: #000;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            padding: 1rem 2rem;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-button.active {
+            border-color: var(--color-red);
+            background-color: #161616;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--color-yellow);
+            transition: width 0.2s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--color-yellow);
+        }
+    </style>
+</head>
+<body class="bg-halftone text-gray-300 relative">
+
+    <nav class="fixed w-full top-0 z-40 border-b-3 border-black bg-[#0A0A0F]/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <span class="font-display text-3xl text-[#FF2D55]" style="text-shadow: 2px 2px 0 #00D4FF, -1px -1px 0 #FFE600;">VELORA</span>
+                    <span class="ml-2 text-xs font-bold tracking-widest text-[#888]">INTERNAL GUIDE</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#overview" class="nav-link font-semibold text-[0.85rem] tracking-widest text-[#F5F5F5] uppercase">Overview</a>
+                        <a href="#brand" class="nav-link font-semibold text-[0.85rem] tracking-widest text-[#F5F5F5] uppercase">Brand & Colors</a>
+                        <a href="#ui-kit" class="nav-link font-semibold text-[0.85rem] tracking-widest text-[#F5F5F5] uppercase">UI Guidelines</a>
+                        <a href="#operations" class="nav-link font-semibold text-[0.85rem] tracking-widest text-[#F5F5F5] uppercase">Operations & Timeline</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative pt-32 pb-16 flex items-center justify-center min-h-[60vh] overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(123,47,255,0.2)_0%,rgba(10,10,15,1)_60%)] z-0"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="inline-block bg-[#FFE600] text-black font-bold text-sm px-3 py-1 border-2 border-black mb-6 shadow-[2px_2px_0_#000] uppercase tracking-widest">
+                Confidential · Team Reference Only
+            </div>
+            <h1 class="text-6xl md:text-8xl lg:text-9xl text-white text-chromatic-intense mb-4 leading-none uppercase">VELORA 1.0</h1>
+            <h2 class="text-2xl md:text-4xl font-display text-[#00D4FF] mb-6 tracking-widest">DARE TO COMPETE</h2>
+            <p class="text-lg md:text-xl text-[#AAAAAA] max-w-2xl mx-auto leading-relaxed mb-8">
+                The ultimate centralized brand style guide, UI framework, and operational playbook for the Cipher x IEEE organizing committees.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#brand" class="comic-button">Access Brand Assets</a>
+                <a href="#operations" class="comic-button" style="background: #FF2D55; color: #FFF;">View Event Ops</a>
+            </div>
+        </div>
+        <div class="absolute -bottom-10 -right-10 opacity-5 font-display text-[20rem] text-white pointer-events-none select-none z-0">V</div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <section id="overview" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-4xl text-white text-chromatic mb-2 uppercase">1. Event Overview & Metrics</h2>
+                <p class="text-[#AAAAAA] max-w-3xl">This section outlines the core objectives, target metrics, and structural logistics of the hackathon. Use this to align external communication and operational expectations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="comic-panel p-6 border-l-4 border-l-[#FF2D55]">
+                        <h3 class="text-2xl text-white mb-3">Core Details</h3>
+                        <ul class="space-y-3 text-sm text-[#AAAAAA]">
+                            <li class="flex items-start"><span class="text-[#FFE600] mr-2 text-lg leading-none">✓</span> <strong>Dates:</strong> 11th - 12th April 2026 (Inauguration: 10th April)</li>
+                            <li class="flex items-start"><span class="text-[#FFE600] mr-2 text-lg leading-none">✓</span> <strong>Format:</strong> 24-Hour National-Level Hackathon</li>
+                            <li class="flex items-start"><span class="text-[#FFE600] mr-2 text-lg leading-none">✓</span> <strong>Organizers:</strong> CIPHER (IT SEC) x IEEE</li>
+                            <li class="flex items-start"><span class="text-[#FFE600] mr-2 text-lg leading-none">✓</span> <strong>Venue:</strong> MITAOE Campus (Design Bldg, E Bldg, CRPC)</li>
+                            <li class="flex items-start"><span class="text-[#FFE600] mr-2 text-lg leading-none">✓</span> <strong>Team Size:</strong> 2 to 5 members</li>
+                        </ul>
+                    </div>
+
+                    <div class="comic-panel p-6 border-l-4 border-l-[#00D4FF]">
+                        <h3 class="text-2xl text-white mb-3">Fee Structure</h3>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div class="bg-[#111] border-2 border-black p-3 shadow-[2px_2px_0_#000]">
+                                <div class="text-xs font-bold text-[#888] tracking-widest mb-1">INTERNAL TEAMS</div>
+                                <div class="font-display text-2xl text-[#FFE600]">Rs 400</div>
+                                <div class="text-xs text-[#555] mt-1">Per Team</div>
+                            </div>
+                            <div class="bg-[#111] border-2 border-black p-3 shadow-[2px_2px_0_#000]">
+                                <div class="text-xs font-bold text-[#888] tracking-widest mb-1">EXTERNAL TEAMS</div>
+                                <div class="font-display text-2xl text-[#00D4FF]">Rs 500</div>
+                                <div class="text-xs text-[#555] mt-1">Per Team</div>
+                            </div>
+                            <div class="col-span-2 bg-[#111] border-2 border-black p-3 shadow-[2px_2px_0_#000]">
+                                <div class="text-xs font-bold text-[#888] tracking-widest mb-1">FINAL ROUND QUALIFIERS</div>
+                                <div class="font-display text-2xl text-[#FF2D55]">Rs 200</div>
+                                <div class="text-xs text-[#555] mt-1">Per Participant (Additional)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comic-panel p-6">
+                    <h3 class="text-2xl text-white mb-4">Participation Funnel Targets</h3>
+                    <p class="text-sm text-[#AAAAAA] mb-6">Visual representation of expected team and individual drop-offs between Round 1 (Online) and Round 2 (Offline).</p>
+                    <div class="chart-container">
+                        <canvas id="funnelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="brand" class="scroll-mt-24">
+            <div class="mb-8 flex items-end justify-between border-b-2 border-[#222] pb-4">
+                <div>
+                    <h2 class="text-4xl text-white text-chromatic mb-2 uppercase">2. Brand Palette & Identity</h2>
+                    <p class="text-[#AAAAAA] max-w-2xl">Click any color swatch to copy its HEX code. These colors must be strictly adhered to across all digital and print materials to maintain the Spider-Verse aesthetic.</p>
+                </div>
+                <div class="hidden md:block starburst w-16 h-16 text-sm">ZAP!</div>
+            </div>
+
+            <div class="space-y-10">
+                <div>
+                    <h3 class="text-2xl font-display text-white mb-4 border-l-4 border-[#FFE600] pl-3">Primary / Surface Colors</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#0A0A0F')">
+                            <div class="h-24 bg-[#0A0A0F] border-b-3 border-black group-hover:bg-[#15151A] transition-colors"></div>
+                            <div class="p-3">
+                                <div class="font-bold text-sm text-white">Background</div>
+                                <div class="font-display text-xl text-[#AAAAAA] mt-1">#0A0A0F</div>
+                            </div>
+                        </div>
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#13131A')">
+                            <div class="h-24 bg-[#13131A] border-b-3 border-black group-hover:bg-[#1E1E26] transition-colors"></div>
+                            <div class="p-3">
+                                <div class="font-bold text-sm text-white">Surface / Panels</div>
+                                <div class="font-display text-xl text-[#AAAAAA] mt-1">#13131A</div>
+                            </div>
+                        </div>
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#111111')">
+                            <div class="h-24 bg-[#111111] border-b-3 border-black group-hover:bg-[#1C1C1C] transition-colors"></div>
+                            <div class="p-3">
+                                <div class="font-bold text-sm text-white">Components</div>
+                                <div class="font-display text-xl text-[#AAAAAA] mt-1">#111111</div>
+                            </div>
+                        </div>
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#000000')">
+                            <div class="h-24 bg-[#000000] border-b-3 border-black group-hover:bg-[#111] transition-colors"></div>
+                            <div class="p-3">
+                                <div class="font-bold text-sm text-white">Universal Border</div>
+                                <div class="font-display text-xl text-[#AAAAAA] mt-1">#000000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-display text-white mb-4 border-l-4 border-[#FF2D55] pl-3">Core Accents (Spider-Verse Triad)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#FF2D55')">
+                            <div class="h-32 bg-[#FF2D55] border-b-3 border-black relative overflow-hidden">
+                                <div class="absolute inset-0 bg-halftone opacity-30"></div>
+                            </div>
+                            <div class="p-4 bg-[#111]">
+                                <div class="font-bold text-white uppercase tracking-widest text-xs mb-1">Spider-Red</div>
+                                <div class="font-display text-3xl text-white">#FF2D55</div>
+                                <div class="text-xs text-[#888] mt-2">Wordmarks, Primary Accents, Active Timeline</div>
+                            </div>
+                        </div>
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#FFE600')">
+                            <div class="h-32 bg-[#FFE600] border-b-3 border-black relative overflow-hidden">
+                                <div class="absolute inset-0 bg-halftone opacity-30"></div>
+                            </div>
+                            <div class="p-4 bg-[#111]">
+                                <div class="font-bold text-white uppercase tracking-widest text-xs mb-1">Cyber Yellow</div>
+                                <div class="font-display text-3xl text-white">#FFE600</div>
+                                <div class="text-xs text-[#888] mt-2">Primary CTAs, Countdown Digits, Highlights</div>
+                            </div>
+                        </div>
+                        <div class="comic-panel cursor-pointer group" onclick="copyHex('#00D4FF')">
+                            <div class="h-32 bg-[#00D4FF] border-b-3 border-black relative overflow-hidden">
+                                <div class="absolute inset-0 bg-halftone opacity-30"></div>
+                            </div>
+                            <div class="p-4 bg-[#111]">
+                                <div class="font-bold text-white uppercase tracking-widest text-xs mb-1">Neon Cyan</div>
+                                <div class="font-display text-3xl text-white">#00D4FF</div>
+                                <div class="text-xs text-[#888] mt-2">Hover States, Glow Effects, Completed Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
+                    <div class="comic-panel p-6">
+                        <h3 class="text-2xl font-display text-[#FFE600] mb-4">Typography Reference</h3>
+
+                        <div class="mb-6 pb-4 border-b-2 border-[#222]">
+                            <div class="text-xs text-[#888] font-bold tracking-widest mb-2">DISPLAY / HEADINGS</div>
+                            <div class="font-display text-5xl text-white mb-1">BANGERS</div>
+                            <div class="text-sm text-[#AAAAAA]">Usage: H1, H2, Wordmarks, Countdown, Buttons</div>
+                        </div>
+
+                        <div>
+                            <div class="text-xs text-[#888] font-bold tracking-widest mb-2">BODY / PARAGRAPHS</div>
+                            <div class="font-sans text-3xl font-bold text-white mb-2">Plus Jakarta Sans</div>
+                            <div class="text-sm text-[#AAAAAA] leading-relaxed">Usage: Body copy, structural labels, functional UI text. Maintains readability at small sizes while providing modern tech geometry.</div>
+                        </div>
+                    </div>
+
+                    <div class="comic-panel p-6">
+                        <h3 class="text-2xl font-display text-[#00D4FF] mb-4">Wordmark / Logo Rules</h3>
+                        <p class="text-sm text-[#AAAAAA] mb-6">Velora does NOT use a standalone image logo. It is a typographic wordmark.</p>
+
+                        <div class="bg-[#0A0A0F] p-6 border-2 border-[#222] text-center mb-4 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-halftone"></div>
+                            <span class="relative z-10 font-display text-5xl text-[#FF2D55]" style="text-shadow: 2px 2px 0 #00D4FF, -1px -1px 0 #FFE600;">VELORA</span>
+                        </div>
+                        <ul class="text-sm text-[#AAAAAA] space-y-2">
+                            <li>• Font: Bangers, uppercase only.</li>
+                            <li>• Standard CSS: <code class="bg-[#222] text-[#00D4FF] px-1">text-shadow: 2px 2px 0 #00D4FF, -1px -1px 0 #FFE600</code></li>
+                            <li>• Never apply rounded borders to containers enclosing the logo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ui-kit" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-4xl text-white text-chromatic mb-2 uppercase">3. UI Component Library</h2>
+                <p class="text-[#AAAAAA] max-w-3xl">Standardized structural blocks. Note the complete absence of <code class="text-[#FF2D55]">border-radius</code> and the reliance on hard-offset <code class="text-[#FF2D55]">box-shadow</code> to create depth. This is mandatory.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="comic-panel p-6">
+                        <h4 class="font-bold text-white uppercase tracking-widest text-xs mb-4">Button States</h4>
+                        <div class="space-y-4 flex flex-col items-start">
+                            <button class="comic-button w-full">Primary CTA</button>
+                            <button class="comic-button w-full" style="background: #FF2D55; color: white;">Secondary</button>
+                            <button class="comic-button w-full" style="background: #111; color: white; border-color: #333; box-shadow: 4px 4px 0 #333; cursor: not-allowed;">Disabled State</button>
+                        </div>
+                    </div>
+
+                    <div class="comic-panel p-6">
+                        <h4 class="font-bold text-white uppercase tracking-widest text-xs mb-4">Badges & Labels</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-[#FF2D55] text-[#0A0A0F] font-bold text-[0.65rem] px-2 py-1 tracking-[0.2em] border border-black shadow-[2px_2px_0_#000]">LIVE NOW</span>
+                            <span class="bg-[#FFE600] text-black font-display text-lg px-2 py-0 border-2 border-black">01</span>
+                            <span class="bg-[#111] text-[#00D4FF] border border-[#00D4FF] font-bold text-[0.65rem] px-2 py-1 tracking-[0.2em]">TECH STACK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="comic-panel h-full flex flex-col">
+                        <div class="bg-[#111] border-b-3 border-black p-3 flex items-center justify-between">
+                            <h4 class="font-bold text-white uppercase tracking-widest text-xs">Standard Data Panel Layout</h4>
+                            <div class="w-3 h-3 bg-[#FF2D55] rotate-45 border border-black"></div>
+                        </div>
+                        <div class="p-6 bg-stripes flex-grow relative">
+                            <div class="absolute inset-4 bg-[#13131A] border-2 border-black shadow-[6px_6px_0_#000] p-6 flex flex-col justify-center">
+                                <h3 class="text-3xl font-display text-[#FFE600] mb-2">Panel Heading Demo</h3>
+                                <p class="text-sm text-[#AAAAAA] mb-4">Notice the layering: Background stripes -> Solid surface box -> Content. Hard shadows define the vertical elevation between these layers.</p>
+                                <div class="flex gap-2">
+                                    <div class="w-10 h-10 border-2 border-black flex items-center justify-center font-display text-2xl bg-[#0A0A0A] shadow-[3px_3px_0_#FF2D55] text-[#FFE600]">2</div>
+                                    <div class="w-10 h-10 border-2 border-black flex items-center justify-center font-display text-2xl bg-[#0A0A0A] shadow-[3px_3px_0_#FF2D55] text-[#FFE600]">4</div>
+                                    <div class="w-10 h-10 flex items-center justify-center font-display text-2xl text-[#888]">:</div>
+                                    <div class="w-10 h-10 border-2 border-black flex items-center justify-center font-display text-2xl bg-[#0A0A0A] shadow-[3px_3px_0_#FF2D55] text-[#FFE600]">0</div>
+                                    <div class="w-10 h-10 border-2 border-black flex items-center justify-center font-display text-2xl bg-[#0A0A0A] shadow-[3px_3px_0_#FF2D55] text-[#FFE600]">0</div>
+                                </div>
+                                <div class="text-xs text-[#888] mt-2 tracking-widest">COUNTDOWN DIGIT FORMAT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="operations" class="scroll-mt-24 mb-24">
+            <div class="mb-8">
+                <h2 class="text-4xl text-white text-chromatic mb-2 uppercase">4. Operations & Master Timeline</h2>
+                <p class="text-[#AAAAAA] max-w-3xl">Internal protocol for execution, discipline, and facility management during the entire lifecycle of Velora 1.0.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-display text-[#FFE600] mb-4">Risk & Discipline Protocol</h3>
+
+                    <div class="comic-panel">
+                        <button class="accordion-button w-full text-left p-4 bg-[#111] flex justify-between items-center border-b-2 border-transparent transition-colors" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-white tracking-wide uppercase text-sm">Participant Verification</span>
+                            <span class="text-[#FF2D55] font-display text-xl icon">+</span>
+                        </button>
+                        <div class="accordion-content bg-[#13131A] px-4 text-sm text-[#AAAAAA]">
+                            <ul class="list-disc pl-5 py-4 space-y-2">
+                                <li>Entry restricted to registered participants only.</li>
+                                <li>Valid college ID cards are strictly mandatory.</li>
+                                <li>Participant attendance maintained throughout the event.</li>
+                                <li>Team-wise records monitored by assigned volunteers.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="comic-panel">
+                        <button class="accordion-button w-full text-left p-4 bg-[#111] flex justify-between items-center border-b-2 border-transparent transition-colors" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-white tracking-wide uppercase text-sm">Overnight Discipline Measures</span>
+                            <span class="text-[#FF2D55] font-display text-xl icon">+</span>
+                        </button>
+                        <div class="accordion-content bg-[#13131A] px-4 text-sm text-[#AAAAAA]">
+                            <ul class="list-disc pl-5 py-4 space-y-2">
+                                <li>Continuous faculty supervision will be maintained.</li>
+                                <li>Volunteers deployed in assigned shifts for monitoring.</li>
+                                <li>Participants must remain within designated hacking areas.</li>
+                                <li>Misconduct leads to immediate disqualification.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="comic-panel">
+                        <button class="accordion-button w-full text-left p-4 bg-[#111] flex justify-between items-center border-b-2 border-transparent transition-colors" onclick="toggleAccordion(this)">
+                            <span class="font-bold text-white tracking-wide uppercase text-sm">Facility & Tech Support</span>
+                            <span class="text-[#FF2D55] font-display text-xl icon">+</span>
+                        </button>
+                        <div class="accordion-content bg-[#13131A] px-4 text-sm text-[#AAAAAA]">
+                            <ul class="list-disc pl-5 py-4 space-y-2">
+                                <li>Stable internet & high-speed Wi-Fi confirmed.</li>
+                                <li>Backup extension boards and power points pre-staged.</li>
+                                <li>Technical volunteers on standby for basic network support.</li>
+                                <li>First-aid kit available; coordination with campus security for night duty.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comic-panel p-6 border-t-4 border-t-[#00D4FF]">
+                    <h3 class="text-2xl font-display text-[#00D4FF] mb-6">Master Project Timeline</h3>
+
+                    <div class="relative border-l-2 border-[#333] pl-6 space-y-8 ml-2">
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#00D4FF] tracking-widest mb-1">MARCH 16 - 18, 2026</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Outreach & Physical Marketing</h4>
+                            <p class="text-sm text-[#AAAAAA]">On-ground promotions and physical marketing campaigns across various colleges to drive external registrations.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#FF2D55] tracking-widest mb-1">MARCH 26, 2026</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Offline Evaluations Commence</h4>
+                            <p class="text-sm text-[#AAAAAA]">Start of physical offline evaluations for early submitted abstracts/ideas.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#FFE600] tracking-widest mb-1">MARCH 30, 2026</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Registration Deadline</h4>
+                            <p class="text-sm text-[#AAAAAA]">Final deadline for all team registrations (Internal and External). No exceptions.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#00D4FF] tracking-widest mb-1">APRIL 2 - 3, 2026 (TENTATIVE)</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Evaluations Conclude</h4>
+                            <p class="text-sm text-[#AAAAAA]">End of the offline evaluation phase. Shortlisted finalist teams for the 24-hour hackathon are finalized and announced.</p>
+                        </div>
+
+                        <div class="relative mt-8 border-t border-[#222] pt-8">
+                            <div class="absolute -left-[33px] top-8 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#FF2D55] tracking-widest mb-1">APRIL 10, 2026</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Internal Inauguration</h4>
+                            <p class="text-sm text-[#AAAAAA]">Closed event for IT Association, college students, and faculty. Final briefing for volunteers.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#FFE600] border-2 border-black rotate-45 shadow-[2px_2px_0_#FF2D55]"></div>
+                            <div class="text-xs font-bold text-[#FFE600] tracking-widest mb-1">APRIL 11, 2026 - DAY 1</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Hackathon Kickoff</h4>
+                            <p class="text-sm text-[#AAAAAA]">Registrations open. Opening ceremony in CRPC Vishwajyoti Auditorium. 24-hour development sprint begins in Design & E Buildings.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#00D4FF] tracking-widest mb-1">APRIL 11, LATE NIGHT</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Review Round 1</h4>
+                            <p class="text-sm text-[#AAAAAA]">Mentors conduct initial feasibility and progress checks. Midnight snacks distributed.</p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute -left-[33px] top-0 w-4 h-4 bg-[#111] border-2 border-[#333] rotate-45"></div>
+                            <div class="text-xs font-bold text-[#FF2D55] tracking-widest mb-1">APRIL 12, 2026 - DAY 2</div>
+                            <h4 class="text-lg text-white font-bold mb-1">Final Submission & Demos</h4>
+                            <p class="text-sm text-[#AAAAAA]">Coding stops. Teams present projects to industry judges. Valedictory ceremony & prize distribution.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t-3 border-black bg-[#050505] py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <div class="font-display text-4xl text-[#FF2D55] mb-2" style="text-shadow: 2px 2px 0 #00D4FF, -1px -1px 0 #FFE600;">VELORA</div>
+                <div class="text-xs text-[#555] tracking-widest uppercase">Internal Operations Guide · Version 1.1</div>
+            </div>
+            <div class="text-right">
+                <div class="text-xs font-bold text-[#333] tracking-widest mb-1">ORGANIZED BY</div>
+                <div class="text-sm text-[#888]">CIPHER - IT Students' Executive Council</div>
+                <div class="text-xs text-[#555]">MIT Academy of Engineering, Alandi</div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast" class="toast">Color Hex Copied!</div>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (!target) {
+                    return;
+                }
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        function copyHex(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                const toast = document.getElementById('toast');
+                toast.innerHTML = '<span class="mr-2">ZAP!</span> Copied <strong>' + hex + '</strong>';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.icon');
+            const isOpen = content.style.maxHeight;
+
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                el.style.maxHeight = null;
+            });
+            document.querySelectorAll('.accordion-button').forEach(el => {
+                el.classList.remove('active');
+                const btnIcon = el.querySelector('.icon');
+                if (btnIcon) {
+                    btnIcon.innerText = '+';
+                }
+            });
+
+            if (!isOpen) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                button.classList.add('active');
+                icon.innerText = '−';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('funnelChart');
+            if (!canvas || typeof Chart === 'undefined') {
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+
+            Chart.defaults.color = '#AAAAAA';
+            Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Online Registrations (Teams)', 'Online Participants (Est.)', 'Offline Finalist Teams', 'Offline Participants'],
+                    datasets: [{
+                        label: 'Expected Count',
+                        data: [120, 500, 50, 200],
+                        backgroundColor: [
+                            'rgba(255, 230, 0, 0.8)',
+                            'rgba(255, 230, 0, 0.4)',
+                            'rgba(0, 212, 255, 0.8)',
+                            'rgba(0, 212, 255, 0.4)'
+                        ],
+                        borderColor: ['#000', '#000', '#000', '#000'],
+                        borderWidth: 2,
+                        hoverBackgroundColor: '#FF2D55',
+                        hoverBorderColor: '#000'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#111',
+                            titleFont: { family: "'Bangers', cursive", size: 16 },
+                            bodyFont: { family: "'Plus Jakarta Sans', sans-serif" },
+                            padding: 12,
+                            borderColor: '#000',
+                            borderWidth: 2,
+                            cornerRadius: 0,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#222' },
+                            ticks: { stepSize: 100 }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                callback: function(value) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 16) {
+                                        return label.match(/.{1,16}(\s|$)/g) || [label];
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
