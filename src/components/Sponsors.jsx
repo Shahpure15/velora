@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { sponsors } from '../data/sponsors'
-import nueva2099Svg from '../assets/landscape/spiderverse_nueva_york_2099.svg'
+import nueva2099Img from '../assets/landscape/spiderverse_nueva_york_2099.png'
 import sponsorBrochure from '../assets/docs/Velora Sponsorship Brochure.pdf'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -281,7 +281,7 @@ export default function Sponsors() {
     >
       {/* Nueva York 2099 cyberpunk background */}
       <img
-        src={nueva2099Svg}
+        src={nueva2099Img}
         aria-hidden="true"
         style={{
           position: 'absolute',

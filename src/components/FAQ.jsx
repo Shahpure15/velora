@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { faqs } from '../data/faqs'
-import mumbaiSvg from '../assets/landscape/spiderverse_mumbai.svg'
+import mumbaiImg from '../assets/landscape/spiderverse_mumbai.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -208,7 +208,7 @@ export default function FAQ() {
     >
       {/* Spider-Verse Mumbai landscape background */}
       <img
-        src={mumbaiSvg}
+        src={mumbaiImg}
         aria-hidden="true"
         style={{
           position: 'absolute',

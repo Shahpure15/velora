@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tracks } from '../data/tracks'
-import newYorkClassicSvg from '../assets/landscape/spiderverse_new_york_classic.svg'
+import newYorkClassicImg from '../assets/landscape/spiderverse_new_york_classic.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -305,7 +305,7 @@ export default function Tracks() {
     >
       {/* NYC Classic landscape background */}
       <img
-        src={newYorkClassicSvg}
+        src={newYorkClassicImg}
         aria-hidden="true"
         style={{
           position: 'absolute',
