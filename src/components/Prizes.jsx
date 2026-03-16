@@ -95,7 +95,7 @@ function GrandPrize({ sectionRef }) {
         zIndex: 2,
         whiteSpace: 'nowrap',
       }}>
-        GRAND PRIZE
+        PRIZE POOL*
       </div>
 
       {/* Trophy icon */}
@@ -118,19 +118,30 @@ function GrandPrize({ sectionRef }) {
         textAlign: 'center',
         marginTop: '0.5rem',
       }}>
-        GRAND PRIZE
+        TOTAL PRIZE POOL*
       </div>
 
       {/* Prize value */}
       <div style={{
         fontFamily: "'Bangers', cursive",
-        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+        fontSize: 'clamp(2rem, 5vw, 4rem)',
         color: '#F5F5F5',
         textAlign: 'center',
         lineHeight: 1.1,
         marginTop: '0.5rem',
       }}>
-        Worth Fighting For
+        ₹XX,XXX*
+      </div>
+      <div style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: '1rem',
+        color: '#FFE600',
+        textAlign: 'center',
+        marginTop: '0.5rem',
+        fontWeight: 'bold',
+        letterSpacing: '0.1em',
+      }}>
+        TO BE ANNOUNCED SOON
       </div>
       <div style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -139,7 +150,7 @@ function GrandPrize({ sectionRef }) {
         textAlign: 'center',
         marginTop: '0.5rem',
       }}>
-        Cash Prize + Certificate + Goodies · Exact amount dropping soon
+        Cash Prize* + Certificate + Goodies*
       </div>
 
       {/* Stat boxes */}
@@ -207,7 +218,7 @@ function TrackCard({ track }) {
         color: '#888',
         marginTop: '0.75rem',
       }}>
-        Cash Prize + Certificate + Goodies
+        Cash Prize* + Certificate + Goodies*
       </div>
 
       {/* Divider */}
@@ -240,7 +251,7 @@ function TrackCard({ track }) {
         color: '#555',
         marginTop: '0.5rem',
       }}>
-        Runner Up: <span style={{ color: '#888' }}>Merch + Certificate</span>
+        Runner Up: <span style={{ color: '#888' }}>Merch* + Certificate</span>
       </div>
 
       {/* Bottom accent bar */}
@@ -361,7 +372,7 @@ export default function Prizes() {
           paddingBottom: '0.2rem',
           marginBottom: '0.4rem',
         }}>
-          ISSUE #03
+          ISSUE #05
         </div>
         <div className="prizes-label-text" style={{
           fontFamily: "'Bangers', cursive",
@@ -379,22 +390,6 @@ export default function Prizes() {
       {/* Grand prize */}
       <GrandPrize sectionRef={sectionRef} />
 
-      {/* Track prize cards */}
-      <div
-        ref={cardsRef}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '1.5rem',
-          marginBottom: '3rem',
-        }}
-        className="prizes-grid"
-      >
-        {tracks.map(track => (
-          <TrackCard key={track.id} track={track} />
-        ))}
-      </div>
-
       {/* Participation tier strip */}
       <div style={{
         background: '#111',
@@ -411,7 +406,7 @@ export default function Prizes() {
             ALL ROUND 2 PARTICIPANTS
           </div>
           <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.8rem', color: '#888', marginTop: '0.2rem' }}>
-            Merch + Certificate of Participation
+            Merch* + Certificate of Participation
           </div>
         </div>
         <div style={{ width: '1px', background: '#333', alignSelf: 'stretch' }} />
@@ -423,6 +418,17 @@ export default function Prizes() {
             Certificate of Participation
           </div>
         </div>
+      </div>
+
+      <div style={{
+        marginTop: '2rem',
+        textAlign: 'center',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: '0.75rem',
+        color: '#888',
+        fontStyle: 'italic'
+      }}>
+        *Terms and conditions apply. Specific items subject to availability and changes based on sponsorships.
       </div>
 
       <style>{`

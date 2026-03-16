@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playBackgroundMusic } from '../utils/audioManager'
 
@@ -6,8 +7,9 @@ const NAV_LINKS = [
   { label: 'About',    id: 'about' },
   { label: 'Tracks',   id: 'tracks' },
   { label: 'Prizes',   id: 'prizes' },
-  { label: 'Judges',   id: 'judges' },
+  { label: 'Timeline', id: 'timeline' },
   { label: 'Sponsors', id: 'sponsors' },
+  { label: 'Resources', id: 'resources' },
   { label: 'FAQ',      id: 'faq' },
 ]
 
@@ -165,15 +167,23 @@ function GlitchNavLink({ label, id, onClick }) {
   )
 }
 
-function scrollTo(id) {
-  if (window.lenis) {
-    window.lenis.scrollTo(`#${id}`)
-  } else {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
-}
-
 export default function Navbar() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  function handleScrollTo(id) {
+    if (location.pathname !== '/') {
+      navigate('/#' + id)
+      // Lenis will handle the offset since we added hash scroll support in ProblemsPage if needed
+      // Actually we handled hash scroll in ProblemsPage, let's copy a simple handler for Home
+    } else {
+      if (window.lenis) {
+        window.lenis.scrollTo('#' + id)
+      } else {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
   const [scrolled,    setScrolled]    = useState(false)
   const [menuOpen,    setMenuOpen]    = useState(false)
   // Effect 3 — wordmark glitch
@@ -208,12 +218,12 @@ export default function Navbar() {
 
   function handleNavClick(id) {
     setMenuOpen(false)
-    setTimeout(() => scrollTo(id), 150)
+    setTimeout(() => handleScrollTo(id), 150)
   }
 
   // Effect 3 — wordmark glitch trigger + Egg 3 click streak + bg music
   function handleWordmarkClick() {
-    scrollTo('top')
+    handleScrollTo('top')
     
     // Play background music when logo is clicked
     playBackgroundMusic()
@@ -511,3 +521,6 @@ export default function Navbar() {
     </>
   )
 }
+
+
+

@@ -4,13 +4,14 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { tracks } from '../data/tracks'
+import { useNavigate } from 'react-router-dom'
 import newYorkClassicImg from '../assets/landscape/spiderverse_new_york_classic.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ─── Universe Card ────────────────────────────────────────────────────────────
+// â”€â”€â”€ Universe Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-function UniverseCard({ track, index }) {
+function UniverseCard({ track, index, onClick }) {
   const cardRef = useRef(null)
   const glowRef = useRef(null)
   const isTBA   = track.problemStatement === 'TBA'
@@ -33,10 +34,13 @@ function UniverseCard({ track, index }) {
     if (glowRef.current) glowRef.current.style.background = 'transparent'
   }, [])
 
+  const IconComponent = track.icon
+
   return (
     <motion.div
       ref={cardRef}
       className="universe-card"
+      onClick={() => onClick(track)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       whileHover={{
@@ -57,7 +61,7 @@ function UniverseCard({ track, index }) {
         flexDirection: 'column',
       }}
     >
-      {/* Layer 1 — color wash */}
+      {/* Layer 1 â€” color wash */}
       <div
         className="card-wash"
         style={{
@@ -70,7 +74,7 @@ function UniverseCard({ track, index }) {
         }}
       />
 
-      {/* Layer 2 — diagonal corner accent */}
+      {/* Layer 2 â€” diagonal corner accent */}
       <div style={{
         position: 'absolute', top: 0, right: 0,
         width: '120px', height: '120px',
@@ -81,7 +85,7 @@ function UniverseCard({ track, index }) {
         zIndex: 0,
       }} />
 
-      {/* Layer 4 — cursor glow */}
+      {/* Layer 4 â€” cursor glow */}
       <div
         ref={glowRef}
         style={{
@@ -109,7 +113,7 @@ function UniverseCard({ track, index }) {
         {String(index + 1).padStart(2, '0')}
       </div>
 
-      {/* Layer 3 — card content */}
+      {/* Layer 3 â€” card content */}
       <div style={{
         position: 'relative', zIndex: 2,
         padding: '2rem',
@@ -118,16 +122,30 @@ function UniverseCard({ track, index }) {
         flexGrow: 1,
       }}>
 
-        {/* Universe label */}
+        {/* Header row: Universe label and Icon */}
         <div style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontSize: '0.7rem',
-          letterSpacing: '0.2em',
-          color: track.primaryColor,
-          opacity: 0.8,
-          textTransform: 'uppercase',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '0.5rem',
         }}>
-          {track.universeLabel}
+          <div style={{
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSize: '0.7rem',
+            letterSpacing: '0.2em',
+            color: track.primaryColor,
+            opacity: 0.8,
+            textTransform: 'uppercase',
+          }}>
+            {track.universeLabel}
+          </div>
+          {IconComponent && (
+            <IconComponent 
+              size={24} 
+              color={track.primaryColor} 
+              style={{ opacity: 0.8 }} 
+            />
+          )}
         </div>
 
         {/* Divider */}
@@ -173,7 +191,7 @@ function UniverseCard({ track, index }) {
           opacity: isTBA ? 0.6 : 1,
           letterSpacing: isTBA ? '0.05em' : 0,
         }}>
-          {isTBA ? '▓▓▓▓▓▓▓▓▓▓▓ CLASSIFIED ▓▓▓▓▓▓▓▓▓▓▓' : track.problemStatement}
+          {isTBA ? '/// CLASSIFIED ///' : track.problemStatement}
         </div>
 
         {/* Spacer */}
@@ -195,7 +213,7 @@ function UniverseCard({ track, index }) {
             textAlign: 'center',
             padding: '0.4rem',
           }}>
-            ◈ TRANSMISSION INCOMING ◈
+            ◇ TRANSMISSION INCOMING ◇
           </div>
         ) : (
           <div style={{
@@ -206,13 +224,14 @@ function UniverseCard({ track, index }) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-            <span style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: '0.75rem',
-              color: '#555',
+            <div style={{
+              fontFamily: "'Bangers', cursive",
+              fontSize: '1.2rem',
+              color: track.primaryColor,
+              letterSpacing: '0.05em',
             }}>
-              PRIZE: {track.prizes === 'TBA' ? '████████' : track.prizes}
-            </span>
+              {track.problemStatements.length} MISSION{track.problemStatements.length !== 1 ? 'S' : ''}
+            </div>
             <EnterButton color={track.primaryColor} />
           </div>
         )}
@@ -256,17 +275,22 @@ function EnterButton({ color }) {
         transition: 'background 0.2s, color 0.2s',
       }}
     >
-      ENTER UNIVERSE →
+      ENTER UNIVERSE &rarr;
     </button>
   )
 }
 
-// ─── Tracks ───────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Tracks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function Tracks() {
   const sectionRef = useRef(null)
   const labelRef   = useRef(null)
   const gridRef    = useRef(null)
+  const navigate   = useNavigate()
+
+  const handleCardClick = useCallback((track) => {
+    navigate('/problems#' + track.id)
+  }, [navigate])
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
@@ -324,7 +348,7 @@ export default function Tracks() {
         }}
       />
 
-      {/* Content — sits above landscape bg */}
+      {/* Content â€” sits above landscape bg */}
       <div style={{ position: 'relative', zIndex: 1 }}>
 
       {/* Section label */}
@@ -341,7 +365,7 @@ export default function Tracks() {
           paddingBottom: '0.2rem',
           marginBottom: '0.4rem',
         }}>
-          ISSUE #02
+          ISSUE #03
         </div>
         <div style={{
           fontFamily: "'Bangers', cursive",
@@ -361,10 +385,27 @@ export default function Tracks() {
         lineHeight: 1.8,
         textAlign: 'center',
         maxWidth: '600px',
-        margin: '0 auto 4rem',
+        margin: '0 auto 1.5rem',
       }}>
         Every hacker comes from a different dimension. Different skills. Different universes. Pick yours.
       </p>
+
+      {/* Disclaimer */}
+      <div style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: '0.85rem',
+        color: '#00D4FF',
+        textAlign: 'center',
+        margin: '0 auto 4rem auto',
+        padding: '0.75rem 1.5rem',
+        background: 'rgba(0, 212, 255, 0.05)',
+        border: '1px solid rgba(0, 212, 255, 0.3)',
+        boxShadow: '4px 4px 0 rgba(0, 212, 255, 0.2)',
+        maxWidth: 'fit-content'
+      }}>
+        <span style={{ fontWeight: 'bold' }}>Note: </span>
+        Detailed problem statements for each domain will be revealed shortly. Click a domain to view details.
+      </div>
 
       {/* Grid */}
       <div
@@ -377,7 +418,7 @@ export default function Tracks() {
         className="tracks-grid"
       >
         {tracks.map((track, i) => (
-          <UniverseCard key={track.id} track={track} index={i} />
+          <UniverseCard key={track.id} track={track} index={i} onClick={handleCardClick} />
         ))}
       </div>
 
@@ -391,3 +432,4 @@ export default function Tracks() {
     </section>
   )
 }
+

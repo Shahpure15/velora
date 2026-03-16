@@ -1,36 +1,27 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './styles/globals.css'
 import './utils/audioManager' // Initialize audio global listener
 import EasterEggs from './components/EasterEggs'
 import CursorWeb from './components/CursorWeb'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import Tracks from './components/Tracks'
-import Prizes from './components/Prizes'
-import Judges from './components/Judges'
-import Sponsors from './components/Sponsors'
-import FAQ from './components/FAQ'
-import Register from './components/Register'
+import Home from './pages/Home'
+import ProblemsPage from './pages/ProblemsPage'
 import Footer from './components/Footer'
 
 function App() {
   return (
-    <>
+    <Router>
       <EasterEggs />
       <CursorWeb />
       <div style={{ position: 'relative' }}>
         <Navbar />
-        <Hero />
-        <About />
-        <Sponsors />
-        <Tracks />
-        <Prizes />
-        <Judges />
-        <FAQ />
-        <Register />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/problems" element={<ProblemsPage />} />
+        </Routes>
         <Footer />
       </div>
-    </>
+    </Router>
   )
 }
 

@@ -253,7 +253,7 @@ export default function FAQ() {
             paddingBottom: '0.2rem',
             marginBottom: '0.4rem',
           }}>
-            ISSUE #06
+            ISSUE #07
           </div>
           <div style={{
             fontFamily: "'Bangers', cursive",

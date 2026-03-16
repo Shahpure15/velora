@@ -391,42 +391,53 @@ export default function Register() {
 
         {/* e) CTA button */}
         <div className="reg-anim" style={{ marginTop: '2.5rem' }}>
-          <div
+          <a
+            href="https://unstop.com/p/velora-10-dare-to-compete-24-hour-national-level-hackathon-mit-academy-of-engineering-mitaoe-pune-maharashtra-1659315"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: '#333',
-              color: '#888',
+              background: '#FFE600',
+              color: '#0A0A0A',
               fontFamily: "'Bangers', cursive",
               fontSize: '1.4rem',
               letterSpacing: '0.15em',
-              border: '3px solid #444',
-              boxShadow: '6px 6px 0 #1A1A1A',
+              border: '3px solid #0A0A0A',
+              boxShadow: '6px 6px 0 #00D4FF',
               padding: '1rem 3rem',
-              borderRadius: 0,
-              cursor: 'not-allowed',
+              textDecoration: 'none',
+              cursor: 'pointer',
               lineHeight: 1,
-              opacity: 0.6,
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translate(-2px, -2px)'
+              e.currentTarget.style.boxShadow = '8px 8px 0 #00D4FF'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translate(0, 0)'
+              e.currentTarget.style.boxShadow = '6px 6px 0 #00D4FF'
             }}
           >
-            REGISTRATIONS OPENING SOON
-          </div>
+            REGISTER ON UNSTOP →
+          </a>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.75rem',
-            color: '#555',
+            color: '#888',
             marginTop: '0.8rem',
           }}>
-            Stay tuned · We'll announce when registrations go live
+            Registration closes on March 30, 2026
           </p>
         </div>
 
         {/* f) Registration status */}
         <div className="reg-anim" style={{
           marginTop: '2.5rem',
-          border: '2px solid #FFE60033',
-          background: '#FFE6000a',
+          border: '2px solid #00D4FF',
+          background: '#00D4FF11',
           padding: '1rem 2rem',
           display: 'inline-block',
         }}>
@@ -434,11 +445,11 @@ export default function Register() {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.7rem',
             letterSpacing: '0.2em',
-            color: '#FFE600',
+            color: '#00D4FF',
             display: 'block',
             textTransform: 'uppercase',
           }}>
-            ⚡ REGISTRATIONS OPENING SOON
+            🟢 REGISTRATIONS NOW LIVE
           </span>
         </div>
 

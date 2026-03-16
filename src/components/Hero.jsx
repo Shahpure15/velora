@@ -3,12 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ieeeLogo from '../assets/landscape/ieee.png'
 import cipherIcon from '../assets/Cipher.png'
 
-// ─── Countdown ────────────────────────────────────────────────────────────────
+// --- Countdown ----------------------------------------------------------------
 
-const TARGET = new Date('2026-03-28T09:00:00').getTime()
+const PHASES = [
+  { target: new Date('2026-03-18T00:00:00').getTime(), label: "REGISTRATIONS OPEN IN" },
+  { target: new Date('2026-03-30T23:59:59').getTime(), label: "REGISTRATIONS CLOSE IN" },
+  { target: new Date('2026-04-11T10:00:00').getTime(), label: "HACKATHON BEGINS IN" },
+  { target: new Date('2026-04-12T10:00:00').getTime(), label: "HACKATHON ENDS IN" }
+]
 
-function getTimeLeft() {
-  const diff = Math.max(0, TARGET - Date.now())
+function getActivePhase() {
+  const now = Date.now()
+  for (const phase of PHASES) {
+    if (phase.target > now) return phase
+  }
+  return null // Events ended
+}
+
+function getTimeLeft(target) {
+  const diff = Math.max(0, target - Date.now())
   return {
     days:  Math.floor(diff / 86400000),
     hrs:   Math.floor((diff % 86400000) / 3600000),
@@ -68,10 +81,27 @@ function FlipDigit({ value, label }) {
 }
 
 function Countdown() {
+  const [activePhase, setActivePhase] = useState(getActivePhase())
+  const [timeLeft, setTimeLeft] = useState(() => activePhase ? getTimeLeft(activePhase.target) : { days: 0, hrs: 0, mins: 0, secs: 0 })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const phase = getActivePhase()
+      setActivePhase(phase)
+      if (phase) {
+        setTimeLeft(getTimeLeft(phase.target))
+      } else {
+        setTimeLeft({ days: 0, hrs: 0, mins: 0, secs: 0 })
+        clearInterval(interval)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
-      <div className="hero-countdown" style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch', opacity: 0.4, filter: 'blur(1px)' }}>
-        <FlipDigit value={'--'} label="DAYS" />
+      <div className="hero-countdown" style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+        <FlipDigit value={timeLeft.days} label="DAYS" />
         <span style={{
           fontFamily: "'Bangers', cursive",
           fontSize: '2rem',
@@ -80,7 +110,7 @@ function Countdown() {
           marginBottom: '1.5rem',
           lineHeight: 1,
         }}>:</span>
-        <FlipDigit value={'--'} label="HRS" />
+        <FlipDigit value={timeLeft.hrs} label="HRS" />
         <span style={{
           fontFamily: "'Bangers', cursive",
           fontSize: '2rem',
@@ -89,7 +119,7 @@ function Countdown() {
           marginBottom: '1.5rem',
           lineHeight: 1,
         }}>:</span>
-        <FlipDigit value={'--'} label="MINS" />
+        <FlipDigit value={timeLeft.mins} label="MINS" />
         <span style={{
           fontFamily: "'Bangers', cursive",
           fontSize: '2rem',
@@ -98,7 +128,7 @@ function Countdown() {
           marginBottom: '1.5rem',
           lineHeight: 1,
         }}>:</span>
-        <FlipDigit value={'--'} label="SECS" />
+        <FlipDigit value={timeLeft.secs} label="SECS" />
       </div>
       <div style={{
         fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -110,7 +140,7 @@ function Countdown() {
         padding: '0.3rem 1rem',
         background: '#FFE6000a',
       }}>
-        REGISTRATIONS OPENING SOON
+        {activePhase ? activePhase.label : "EVENT INITIATED"}
       </div>
     </div>
   )
@@ -569,7 +599,7 @@ export default function Hero() {
           marginTop: '1.5rem',
           letterSpacing: '0.03em',
         }}>
-          24-Hour Hackathon &nbsp;·&nbsp; MITAOE, Alandi &nbsp;·&nbsp; Late March 2026
+          24-Hour Hackathon &nbsp;&middot;&nbsp; MITAOE, Alandi &nbsp;&middot;&nbsp; Late March 2026
         </motion.div>
 
         {/* f) Countdown */}
@@ -622,3 +652,6 @@ export default function Hero() {
     </section>
   )
 }
+
+
+
