@@ -6,7 +6,6 @@ import cipherIcon from '../assets/Cipher.png'
 // --- Countdown ----------------------------------------------------------------
 
 const PHASES = [
-  { target: new Date('2026-03-18T00:00:00').getTime(), label: "REGISTRATIONS OPEN IN" },
   { target: new Date('2026-03-30T23:59:59').getTime(), label: "REGISTRATIONS CLOSE IN" },
   { target: new Date('2026-04-11T10:00:00').getTime(), label: "HACKATHON BEGINS IN" },
   { target: new Date('2026-04-12T10:00:00').getTime(), label: "HACKATHON ENDS IN" }
@@ -612,7 +611,7 @@ export default function Hero() {
           {...fadeUp(1.2)}
           whileHover={{ y: -2, boxShadow: '7px 7px 0 #000', backgroundColor: '#FF0040' }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => window.lenis?.scrollTo('#about', { duration: 1.5 })}
+          onClick={() => window.lenis?.scrollTo('#tracks', { duration: 1.5 })}
           style={{
             fontFamily: "'Bangers', cursive",
             fontSize: '1.3rem',
