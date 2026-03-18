@@ -17,7 +17,6 @@ const SOCIALS = [
   { label: '↗ Instagram (Velora)', href: 'https://www.instagram.com/veloramitaoe/' },
   { label: '↗ Instagram (Cipher)', href: 'https://www.instagram.com/ciphermitaoe/' },
   { label: '↗ LinkedIn (Velora)',  href: 'https://linkedin.com/in/velora' },
-  { label: '↗ LinkedIn (Cipher)',  href: 'https://linkedin.com/in/cipher' },
   { label: '↗ WhatsApp Community', href: 'https://chat.whatsapp.com/Lm6iQCUw79n5kmA5YUYEyt' },
 ]
 
