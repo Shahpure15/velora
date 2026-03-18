@@ -14,9 +14,11 @@ const NAV_SECTIONS = [
 ]
 
 const SOCIALS = [
-  { label: '↗ Instagram', href: '#' },
-  { label: '↗ LinkedIn',  href: '#' },
-  { label: '↗ Twitter',   href: '#' },
+  { label: '↗ Instagram (Velora)', href: 'https://www.instagram.com/veloramitaoe/' },
+  { label: '↗ Instagram (Cipher)', href: 'https://www.instagram.com/ciphermitaoe/' },
+  { label: '↗ LinkedIn (Velora)',  href: 'https://linkedin.com/in/velora' },
+  { label: '↗ LinkedIn (Cipher)',  href: 'https://linkedin.com/in/cipher' },
+  { label: '↗ WhatsApp Community', href: 'https://chat.whatsapp.com/Lm6iQCUw79n5kmA5YUYEyt' },
 ]
 
 // ─── Footer Link (hover state handled inline) ─────────────────────────────────
@@ -42,6 +44,8 @@ function FooterLink({ children, onClick, href }) {
     return (
       <a
         href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         style={style}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -210,8 +214,8 @@ export default function Footer() {
             }}>
               Questions?
             </div>
-            <FooterLink href="mailto:cipherit.mitaoe@gmail.com">
-              cipherit.mitaoe@gmail.com
+            <FooterLink href="mailto:velora.cipher@gmail.com">
+              velora.cipher@gmail.com
             </FooterLink>
           </div>
         </div>

@@ -105,10 +105,38 @@ export default function ProblemsPage() {
           fontSize: '1rem',
           lineHeight: 1.7,
           maxWidth: '600px',
-          marginBottom: '4rem',
+          marginBottom: '2rem',
         }}>
           All domain challenges in one place. Expand any problem to see the mission brief and required deliverables.
         </p>
+
+        {/* IMPORTANT FLEXIBILITY NOTE */}
+        <div style={{
+          background: 'rgba(255, 230, 0, 0.1)',
+          border: '2px dashed #FFE600',
+          padding: '1.5rem',
+          marginBottom: '4rem',
+          position: 'relative',
+          boxShadow: '4px 4px 0 rgba(255, 230, 0, 0.2)'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-14px',
+            left: '16px',
+            background: '#000',
+            padding: '0 8px',
+            color: '#FFE600',
+            fontFamily: "'Bangers', cursive",
+            fontSize: '1.3rem',
+            letterSpacing: '0.05em'
+          }}>
+            SYSTEM OVERRIDE: TECH STACK FLEXIBILITY
+          </div>
+          <p style={{ color: '#eee', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
+            The tech stacks and specific technical requirements mentioned in the problem statements are <strong>just suggestions, not rules</strong>. 
+            You are entirely free to change the tech stack to better suit your solution! For example, if a statement suggests React Native, you can build a React PWA, a Flutter app, or a native Android app instead. Adding your own creative features is also highly encouraged. Choose the weapons you know best.
+          </p>
+        </div>
 
         {/* Domain sections */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>

@@ -396,7 +396,7 @@ export default function Tracks() {
         fontSize: '0.85rem',
         color: '#00D4FF',
         textAlign: 'center',
-        margin: '0 auto 4rem auto',
+        margin: '0 auto 1.5rem auto',
         padding: '0.75rem 1.5rem',
         background: 'rgba(0, 212, 255, 0.05)',
         border: '1px solid rgba(0, 212, 255, 0.3)',
@@ -405,6 +405,24 @@ export default function Tracks() {
       }}>
         <span style={{ fontWeight: 'bold' }}>Note: </span>
         Detailed problem statements for each domain will be revealed shortly. Click a domain to view details.
+      </div>
+
+      {/* Tech Stack Flexibility Note */}
+      <div style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: '0.9rem',
+        color: '#FFE600',
+        textAlign: 'center',
+        margin: '0 auto 4rem auto',
+        padding: '1rem 1.5rem',
+        background: 'rgba(255, 230, 0, 0.05)',
+        border: '1px dashed #FFE600',
+        boxShadow: '4px 4px 0 rgba(255, 230, 0, 0.2)',
+        maxWidth: '700px',
+        lineHeight: 1.6
+      }}>
+        <span style={{ fontWeight: 800, letterSpacing: '0.05em' }}>TECH STACK FLEXIBILITY: </span>
+        The tech stacks mentioned in our problem statements are <strong>just suggestions, not rules</strong>. You are completely free to change them to better suit your solution (e.g. use Flutter instead of React Native). Adding your own creative features is also highly encouraged!
       </div>
 
       {/* Grid */}

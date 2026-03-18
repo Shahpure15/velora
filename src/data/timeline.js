@@ -1,9 +1,9 @@
 ﻿export const timeline = [
   {
     phase: '01',
-    title: 'Offline/Online Evaluations Begin',
+    title: 'Online Evaluations Begin',
     date: 'March 26, 2026',
-    description: '(Round 1 Scrutiny) Scrutiny begins for all submitted projects.',
+    description: '(Round 1 Scrutiny) Online scrutiny begins for all submitted projects.',
     status: 'upcoming', 
     actionWord: 'WAIT!',
   },
@@ -18,9 +18,9 @@
   },
   {
     phase: '03',
-    title: 'Offline/Online Evaluations End',
+    title: 'Online Evaluations End',
     date: 'April 3, 2026',
-    description: 'The end of Round 1 Scrutiny.',
+    description: 'The end of Round 1 Online Scrutiny.',
     status: 'upcoming',
     actionWord: 'CONCLUDE!',
   },

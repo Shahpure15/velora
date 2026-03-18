@@ -17,7 +17,7 @@ export const faqs = [
   {
     id: 4,
     question: 'What happens in Round 1?',
-    answer: 'Round 1 is an online submission round. Teams submit their project idea as a PPT or video.',
+    answer: 'Round 1 is an online submission and evaluation round. Teams submit their project idea as a PPT or video, which is then evaluated online.',
   },
   {
     id: 5,
