@@ -545,7 +545,7 @@ export default function Hero() {
         </motion.div>
 
         {/* b) VELORA */}
-        <motion.div {...fadeScale(0.4)} style={{ position: 'relative', marginTop: '0.5rem' }}>
+        <motion.h1 {...fadeScale(0.4)} style={{ position: 'relative', marginTop: '0.5rem', margin: 0, padding: 0, border: 0 }}>
           <span
             className="velora-hero-title"
             style={{
@@ -559,10 +559,10 @@ export default function Hero() {
           >
             VELORA
           </span>
-        </motion.div>
+        </motion.h1>
 
         {/* c) 1.0 */}
-        <motion.span {...fadeLeft(0.6)} style={{
+        <motion.h2 {...fadeLeft(0.6)} style={{
           fontFamily: "'Bangers', cursive",
           fontSize: 'clamp(2rem, 5vw, 4rem)',
           color: '#00D4FF',
@@ -573,10 +573,10 @@ export default function Hero() {
           paddingLeft: '2rem',
         }}>
           1.0
-        </motion.span>
+        </motion.h2>
 
         {/* d) DARE TO COMPETE */}
-        <motion.span {...fadeUp(0.7)} style={{
+        <motion.p {...fadeUp(0.7)} style={{
           fontFamily: "'Bangers', cursive",
           fontSize: 'clamp(1.2rem, 3vw, 2.2rem)',
           color: '#F5F5F5',

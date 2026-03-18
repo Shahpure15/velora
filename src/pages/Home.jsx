@@ -22,7 +22,7 @@ export default function Home() {
   }, [location])
 
   return (
-    <>
+    <main>
       <Hero />
       <About />
       <Sponsors />
@@ -32,6 +32,7 @@ export default function Home() {
       <Resources />
       <FAQ />
       <Register />
-    </>
+    </main>
   )
 }
+

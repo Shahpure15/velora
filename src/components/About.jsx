@@ -115,7 +115,7 @@ function ComicPanel({ panel, className }) {
           {panel.icon.image ? (
             <img
               src={panel.icon.image}
-              alt=""
+              alt={`${panel.heading} Icon`}
               style={{
                 height: panel.icon.size,
                 objectFit: 'contain',
