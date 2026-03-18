@@ -585,7 +585,7 @@ export default function Hero() {
           display: 'block',
         }}>
           DARE TO COMPETE
-        </motion.span>
+        </motion.p>
 
         {/* e) Event info */}
         <motion.div {...fadeUp(0.9)} style={{
