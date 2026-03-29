@@ -12,8 +12,8 @@ gsap.registerPlugin(ScrollTrigger)
 // Renders answer string; wraps "TBA" occurrences in redacted styling
 
 function AnswerText({ text }) {
-  // Split on TBA (standalone word), preserve surrounding text
-  const parts = text.split(/(TBA)/g)
+  // Split on TBA or URLs
+  const parts = text.split(/(TBA|https?:\/\/[^\s)]+)/g)
   return (
     <p style={{
       fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -22,17 +22,28 @@ function AnswerText({ text }) {
       lineHeight: 1.8,
       margin: 0,
     }}>
-      {parts.map((part, i) =>
-        part === 'TBA' ? (
-          <span key={i} style={{
-            background: '#1A1A1A',
-            color: '#444',
-            padding: '0 0.3rem',
-            borderRadius: '2px',
-            fontStyle: 'italic',
-          }}>TBA</span>
-        ) : part
-      )}
+      {parts.map((part, i) => {
+        if (!part) return null;
+        if (part === 'TBA') {
+          return (
+            <span key={i} style={{
+              background: '#1A1A1A',
+              color: '#444',
+              padding: '0 0.3rem',
+              borderRadius: '2px',
+              fontStyle: 'italic',
+            }}>TBA</span>
+          )
+        }
+        if (part.startsWith('http')) {
+          return (
+            <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#00D4FF', textDecoration: 'underline' }}>
+              {part}
+            </a>
+          )
+        }
+        return part;
+      })}
     </p>
   )
 }

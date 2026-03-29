@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import cipherIcon from '../assets/Cipher.png'
 
 // ─── Nav sections for footer links ────────────────────────────────────────────
@@ -70,6 +70,21 @@ function FooterLink({ children, onClick, href }) {
 
 export default function Footer() {
   const [isGlitching, setIsGlitching] = useState(false)
+  const [isLocationOpen, setIsLocationOpen] = useState(false)
+
+  useEffect(() => {
+    if (isLocationOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [isLocationOpen])
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   function handleWordmarkClick() {
     if (isGlitching) return
@@ -187,7 +202,7 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Right block — socials + contact */}
+        {/* Right block — socials + contact + venue */}
         <div className="footer-right-block">
           <div style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -197,8 +212,37 @@ export default function Footer() {
             textTransform: 'uppercase',
             marginBottom: '1rem',
           }}>
-            CONNECT
+            VENUE & CONNECT
           </div>
+          {/* Small map directly on footer */}
+          <div 
+            onClick={() => setIsLocationOpen(true)}
+            style={{ 
+              width: '200px', 
+              height: '100px', 
+              marginBottom: '1rem', 
+              border: '1px solid #333', 
+              borderRadius: '4px', 
+              overflow: 'hidden',
+              cursor: 'pointer',
+              position: 'relative'
+            }}
+          >
+            <div style={{ position: 'absolute', inset: 0, zIndex: 10, background: 'rgba(0,0,0,0.1)' }}></div>
+            <iframe
+              title="MITAOE Small Map"
+              src="https://maps.google.com/maps?q=MIT+Academy+of+Engineering,+Alandi,+Pune&t=m&z=14&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0, pointerEvents: 'none' }}
+              loading="lazy"
+            ></iframe>
+          </div>
+
+          <FooterLink onClick={() => setIsLocationOpen(true)}>
+            📍 Guide: How to reach MITAOE?
+          </FooterLink>
+          <div style={{ margin: '1rem 0' }} />
           {SOCIALS.map(({ label, href }) => (
             <FooterLink key={label} href={href}>
               {label}
@@ -261,6 +305,154 @@ export default function Footer() {
           </span>
         </FooterLink>
       </div>
+
+      {/* Location Modal */}
+      {isLocationOpen && (
+        <div
+          onClick={() => setIsLocationOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            background: 'rgba(5,5,5,0.85)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent="true"
+            style={{
+              background: '#0d0d0d',
+              border: '2px solid #222',
+              borderRadius: '8px',
+              maxWidth: '800px',
+              width: '100%',
+              padding: '2rem',
+              position: 'relative',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              overscrollBehavior: 'contain',
+              boxShadow: '0 0 30px rgba(0,212,255,0.1)',
+            }}
+          >
+            <button
+              onClick={() => setIsLocationOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                color: '#FF2D55',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: 'bold',
+              }}
+            >
+              ×
+            </button>
+
+            <h2 style={{
+              fontFamily: "'Bangers', cursive",
+              fontSize: '2.5rem',
+              color: '#00D4FF',
+              textShadow: '2px 2px 0 #FF2D55',
+              marginBottom: '1rem',
+              textAlign: 'center',
+            }}>
+              HOW TO REACH VELORA
+            </h2>
+            <div style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: '0.9rem',
+              color: '#aaa',
+              textAlign: 'center',
+              marginBottom: '2rem',
+            }}>
+              MIT Academy of Engineering, Alandi, Pune
+            </div>
+
+            {/* Google Map Embed */}
+            <div style={{ width: '100%', height: '300px', marginBottom: '2rem', border: '1px solid #333' }}>
+              <iframe
+                title="MITAOE Location"
+                src="https://maps.google.com/maps?q=MIT+Academy+of+Engineering,+Alandi,+Pune&t=m&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            {/* Routes Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.5rem',
+            }}>
+              {/* Route 1 */}
+              <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #FF2D55' }}>
+                <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#fff', fontSize: '1rem', marginBottom: '0.5rem' }}>🚂 From Pune Station</h3>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#888', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                  Direct PMPML buses are frequently available from Pune Station directly to Alandi. There is no need to take a train to another station.
+                </p>
+              </div>
+
+               {/* Route 2 */}
+              <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #FFE600' }}>
+                <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#fff', fontSize: '1rem', marginBottom: '0.5rem' }}>✈️ From Airport</h3>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#888', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                  The quickest way is to book an Ola/Uber cab or auto-rickshaw through Dighi and Charholi directly to Alandi (approx. ~15km).
+                </p>
+              </div>
+
+              {/* Route 3 */}
+              <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #00D4FF' }}>
+                <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#fff', fontSize: '1rem', marginBottom: '0.5rem' }}>🚌 From Bhosari</h3>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#888', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                  Very close to the campus. You can easily find shared autos heading towards Alandi via Dighi Road, taking about 15-20 minutes.
+                </p>
+              </div>
+              
+              {/* Route 4 */}
+              <div style={{ background: '#111', padding: '1.5rem', borderLeft: '3px solid #00ff88' }}>
+                <h3 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#fff', fontSize: '1rem', marginBottom: '0.5rem' }}>📍 From Chikhali/Moshi</h3>
+                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#888', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                  Head towards Dehu Phata junction. Direct autos and buses frequent the road linking Dehu and Alandi directly to MITAOE gates.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=MIT+Academy+of+Engineering,+Alandi,+Pune" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  display: 'inline-block',
+                  background: '#FF2D55',
+                  color: '#fff',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 'bold',
+                  textDecoration: 'none',
+                  padding: '0.8rem 1.5rem',
+                  borderRadius: '4px',
+                  boxShadow: '0 0 10px rgba(255, 45, 85, 0.4)'
+                }}
+              >
+                OPEN IN GOOGLE MAPS ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         .footer-velora-glitch {

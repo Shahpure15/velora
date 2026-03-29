@@ -27,21 +27,21 @@ export const faqs = [
   {
     id: 6,
     question: 'Do I need to know coding?',
-    answer: 'TBA',
+    answer: 'While coding knowledge is highly recommended for building the prototype, hackathons are also about problem-solving! You can contribute through UI/UX design, presentations, or business logic. However, having coders in the team is essential for the final product.',
   },
   {
     id: 7,
     question: 'What should our PPT/video cover?',
-    answer: 'TBA',
+    answer: 'Your submission should clearly explain the problem statement, your proposed solution, the tech stack you plan to use, a basic system architecture, and the potential impact of your project.',
   },
   {
     id: 8,
     question: 'When will Round 1 results be announced?',
-    answer: 'TBA — dates will be updated on this page and announced on our social channels.',
+    answer: 'Round 1 results will be announced shortly after the submission deadline. Please join our WhatsApp community and keep an eye on our social handles for updates!',
   },
   {
     id: 9,
     question: 'Where is MITAOE?',
-    answer: 'MIT Academy of Engineering (MITAOE) is located in Alandi, Pune, Maharashtra.',
+    answer: 'MIT Academy of Engineering (MITAOE) is located in Alandi, Pune, Maharashtra. (Google Maps: https://www.google.com/maps/search/?api=1&query=MIT+Academy+of+Engineering,+Alandi,+Pune)',
   },
 ]
