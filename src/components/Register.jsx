@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 // ─── Countdown (days + hrs only) ──────────────────────────────────────────────
 
-const TARGET = new Date('2026-03-28T09:00:00').getTime()
+const TARGET = new Date('2026-04-03T23:59:59').getTime()
 
 function getTimeLeft() {
   const diff = Math.max(0, TARGET - Date.now())
@@ -425,11 +425,18 @@ export default function Register() {
           </a>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '0.75rem',
-            color: '#888',
-            marginTop: '0.8rem',
+            fontSize: '0.9rem',
+            color: '#fff',
+            marginTop: '1.2rem',
+            textAlign: 'center',
+            lineHeight: '1.5',
+            backgroundColor: 'rgba(255, 45, 85, 0.15)',
+            border: '1px solid #FF2D55',
+            padding: '10px 15px',
+            borderRadius: '4px'
           }}>
-            Registration closes on March 30, 2026
+            <strong style={{ color: '#00D4FF' }}>Registration Deadline Extended to 3rd April 23:59!</strong> <br />
+            <span style={{ color: '#FFE600' }}>Notice: Registration fees will increase on 30 March 23:59, so please register quickly to secure the original price!</span>
           </p>
         </div>
 

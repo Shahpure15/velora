@@ -12,7 +12,7 @@ export const faqs = [
   {
     id: 3,
     question: 'Is there a registration fee?',
-    answer: 'Yes, there is a nominal registration fee. Check the Unstop page for details.',
+    answer: 'Yes, there is a nominal registration fee. Check the Unstop page for details. Note: Fees will increase on 30 March 23:59, so register early!',
   },
   {
     id: 4,

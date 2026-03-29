@@ -6,7 +6,7 @@ import cipherIcon from '../assets/Cipher.png'
 // --- Countdown ----------------------------------------------------------------
 
 const PHASES = [
-  { target: new Date('2026-03-30T23:59:59').getTime(), label: "REGISTRATIONS CLOSE IN" },
+  { target: new Date('2026-04-03T23:59:59').getTime(), label: "REGISTRATIONS CLOSE IN" },
   { target: new Date('2026-04-11T10:00:00').getTime(), label: "HACKATHON BEGINS IN" },
   { target: new Date('2026-04-12T10:00:00').getTime(), label: "HACKATHON ENDS IN" }
 ]
