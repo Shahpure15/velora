@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ieeeLogo from '../assets/landscape/ieee.png'
 import cipherIcon from '../assets/Cipher.png'
+import resultsPdf from '../assets/docs/Velora 1.0 Results!!!.pdf'
 
 // --- Countdown ----------------------------------------------------------------
 
@@ -545,6 +546,7 @@ export default function Hero() {
         </motion.div>
 
         {/* b) VELORA */}
+        {/* b) VELORA */}
         <motion.h1 {...fadeScale(0.4)} style={{ position: 'relative', marginTop: '0.5rem', margin: 0, padding: 0, border: 0 }}>
           <span
             className="velora-hero-title"
@@ -607,28 +609,65 @@ export default function Hero() {
         </motion.div>
 
         {/* g) CTA */}
-        <motion.button
+        <motion.div
           {...fadeUp(1.2)}
-          whileHover={{ y: -2, boxShadow: '7px 7px 0 #000', backgroundColor: '#FF0040' }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => window.lenis?.scrollTo('#tracks', { duration: 1.5 })}
           style={{
-            fontFamily: "'Bangers', cursive",
-            fontSize: '1.3rem',
-            letterSpacing: '0.15em',
-            background: '#FF2D55',
-            color: '#F5F5F5',
-            border: '3px solid #000',
-            boxShadow: '5px 5px 0 #000',
-            padding: '0.8rem 2.5rem',
-            borderRadius: 0,
-            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.8rem',
+            flexWrap: 'wrap',
             marginTop: '2rem',
-            transition: 'background-color 0.15s',
           }}
         >
-          ENTER THE VERSE →
-        </motion.button>
+          <motion.button
+            whileHover={{ y: -2, boxShadow: '7px 7px 0 #000', backgroundColor: '#FF0040' }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => window.lenis?.scrollTo('#tracks', { duration: 1.5 })}
+            style={{
+              fontFamily: "'Bangers', cursive",
+              fontSize: '1.3rem',
+              letterSpacing: '0.15em',
+              background: '#FF2D55',
+              color: '#F5F5F5',
+              border: '3px solid #000',
+              boxShadow: '5px 5px 0 #000',
+              padding: '0.8rem 2.5rem',
+              borderRadius: 0,
+              cursor: 'pointer',
+              transition: 'background-color 0.15s',
+            }}
+          >
+            ENTER THE VERSE →
+          </motion.button>
+
+          <motion.a
+            href={resultsPdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -2, boxShadow: '7px 7px 0 #000', backgroundColor: '#00b7df' }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: "'Bangers', cursive",
+              fontSize: '1.3rem',
+              letterSpacing: '0.15em',
+              background: '#00D4FF',
+              color: '#0A0A0A',
+              border: '3px solid #000',
+              boxShadow: '5px 5px 0 #000',
+              padding: '0.8rem 2.2rem',
+              borderRadius: 0,
+              cursor: 'pointer',
+              textDecoration: 'none',
+              transition: 'background-color 0.15s',
+            }}
+          >
+            VIEW RESULTS ↗
+          </motion.a>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}
